@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 5588665986487648578}
   m_Layer: 0
   m_Name: Tile
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -113,10 +113,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   width: 250
   height: 250
+  peaks: 100
   layers:
   - seed: 100
-    frequency: 0.5
+    frequency: 0.2
     amplitude: 1
   - seed: 0
     frequency: 0.01
     amplitude: 25
+  - seed: 350
+    frequency: 0.005
+    amplitude: 75

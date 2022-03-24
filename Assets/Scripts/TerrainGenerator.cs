@@ -15,11 +15,12 @@ public class TerrainGenerator : MonoBehaviour
     Mesh mesh;
     public int width = 0;
     public int height = 0;
+    public float peaks = 100f;
     Vector3[] vertecies;
     int[] triangles;
     public List<Layer> layers;
 
-    void Start()
+    void Awake()
     {
         mesh = new Mesh();
         GetComponent<MeshFilter>().mesh = mesh;
@@ -40,17 +41,16 @@ public class TerrainGenerator : MonoBehaviour
                 float value = 0f, normal = 0f;
                 foreach (var layer in layers)
                 {
-                    value += layer.amplitude * Mathf.PerlinNoise(x * layer.frequency + layer.seed, z * layer.frequency + layer.seed);
+                    value += layer.amplitude * Mathf.PerlinNoise((x + transform.position.x) * layer.frequency + layer.seed, (z + transform.position.z) * layer.frequency + layer.seed);
                     normal += layer.amplitude;
                 }
-                vertecies[idx] = new Vector3(x, Mathf.Clamp01(value / normal) * 24f, z);
+                vertecies[idx] = new Vector3(x, Mathf.Clamp01(value / normal) * peaks, z);
                 idx++;
             }
         }
 
         int vertex = 0, triangle = 0;
         triangles = new int[width * height * 6];
-        Debug.Log(width * height * 6);
 
         for (int z = 0; z < height; z++)
         {
