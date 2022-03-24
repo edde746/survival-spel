@@ -2,6 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[System.Serializable]
+public struct Layer
+{
+    public float seed;
+    public float frequency;
+    public float amplitude;
+}
+
 public class TerrainGenerator : MonoBehaviour
 {
     Mesh mesh;
@@ -9,6 +17,7 @@ public class TerrainGenerator : MonoBehaviour
     public int height = 0;
     Vector3[] vertecies;
     int[] triangles;
+    public List<Layer> layers;
 
     void Start()
     {
@@ -28,14 +37,20 @@ public class TerrainGenerator : MonoBehaviour
         {
             for (int x = 0; x <= height; x++)
             {
-                // TODO: Layer the perlin noise
-                vertecies[idx] = new Vector3(x, Mathf.PerlinNoise(x * .3f, z * .3f) * 2f, z);
+                float value = 0f, normal = 0f;
+                foreach (var layer in layers)
+                {
+                    value += layer.amplitude * Mathf.PerlinNoise(x * layer.frequency + layer.seed, z * layer.frequency + layer.seed);
+                    normal += layer.amplitude;
+                }
+                vertecies[idx] = new Vector3(x, Mathf.Clamp01(value / normal) * 24f, z);
                 idx++;
             }
         }
 
         int vertex = 0, triangle = 0;
         triangles = new int[width * height * 6];
+        Debug.Log(width * height * 6);
 
         for (int z = 0; z < height; z++)
         {
@@ -65,5 +80,7 @@ public class TerrainGenerator : MonoBehaviour
         mesh.triangles = triangles;
 
         mesh.RecalculateNormals();
+        mesh.RecalculateBounds();
+        GetComponent<MeshCollider>().sharedMesh = mesh;
     }
 }
