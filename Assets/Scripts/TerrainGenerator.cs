@@ -2,30 +2,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[System.Serializable]
-public struct Layer
-{
-    public float seed;
-    public float frequency;
-    public float amplitude;
-}
-
 public class TerrainGenerator : MonoBehaviour
 {
     Mesh mesh;
-    public int width = 0;
-    public int height = 0;
-    public float peaks = 100f;
+    public int width = 250;
+    public int height = 250;
     Vector3[] vertecies;
     int[] triangles;
-    public List<Layer> layers;
-    Vector3 centerPoint;
+    Color[] colors;
 
     void Awake()
     {
         mesh = new Mesh();
         GetComponent<MeshFilter>().mesh = mesh;
-        centerPoint = WorldGeneration.GetCenterPoint();
 
         CreateGrid();
         UpdateMesh();
@@ -35,23 +24,21 @@ public class TerrainGenerator : MonoBehaviour
     {
         vertecies = new Vector3[(width + 1) * (height + 1)];
 
-        var idx = 0;
-        for (int z = 0; z <= width; z++)
+        for (int idx = 0, z = 0; z <= width; z++)
         {
-            for (int x = 0; x <= height; x++)
+            for (int x = 0; x <= height; x++, idx++)
             {
                 float value = 0f, normal = 0f;
                 float worldX = (x + transform.position.x);
                 float worldZ = (z + transform.position.z);
-                foreach (var layer in layers)
+                foreach (var layer in WorldGeneration.Instance.layers)
                 {
                     value += layer.amplitude * Mathf.PerlinNoise(worldX * layer.frequency + layer.seed, worldZ * layer.frequency + layer.seed);
                     normal += layer.amplitude;
                 }
-                value = value * (1f - Mathf.Clamp01(Vector3.Distance(centerPoint, new Vector3(worldX, 0f, worldZ)) / 500f));
+                value = value * (1f - Mathf.Clamp01(Vector3.Distance(WorldGeneration.centerPoint, new Vector3(worldX, 0f, worldZ)) / 500f));
 
-                vertecies[idx] = new Vector3(x, Mathf.Clamp01(value / normal) * peaks, z);
-                idx++;
+                vertecies[idx] = new Vector3(x, Mathf.Clamp01(value / normal) * WorldGeneration.Instance.peaks, z);
             }
         }
 
@@ -76,6 +63,15 @@ public class TerrainGenerator : MonoBehaviour
             vertex++;
         }
 
+        //colors = new Color[vertecies.Length];
+
+        //for (int idx = 0, z = 0; z <= width; z++)
+        //{
+        //    for (int x = 0; x <= height; x++, idx++)
+        //    {
+        //        colors[idx] = WorldGeneration.Instance.heightColors.Evaluate(vertecies[idx].y / peaks);
+        //    }
+        //}
     }
 
     void UpdateMesh()
@@ -84,6 +80,7 @@ public class TerrainGenerator : MonoBehaviour
 
         mesh.vertices = vertecies;
         mesh.triangles = triangles;
+        //mesh.colors = colors;
 
         mesh.RecalculateNormals();
         mesh.RecalculateBounds();
