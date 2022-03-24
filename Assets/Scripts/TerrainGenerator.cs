@@ -16,15 +16,16 @@ public class TerrainGenerator : MonoBehaviour
     public int width = 0;
     public int height = 0;
     public float peaks = 100f;
-    public Vector3 centerPoint = new Vector3(500f, 0f, 500f);
     Vector3[] vertecies;
     int[] triangles;
     public List<Layer> layers;
+    Vector3 centerPoint;
 
     void Awake()
     {
         mesh = new Mesh();
         GetComponent<MeshFilter>().mesh = mesh;
+        centerPoint = WorldGeneration.GetCenterPoint();
 
         CreateGrid();
         UpdateMesh();
@@ -47,8 +48,6 @@ public class TerrainGenerator : MonoBehaviour
                     value += layer.amplitude * Mathf.PerlinNoise(worldX * layer.frequency + layer.seed, worldZ * layer.frequency + layer.seed);
                     normal += layer.amplitude;
                 }
-
-                // This NEEDS refactoring, create global class which contains world generation information
                 value = value * (1f - Mathf.Clamp01(Vector3.Distance(centerPoint, new Vector3(worldX, 0f, worldZ)) / 500f));
 
                 vertecies[idx] = new Vector3(x, Mathf.Clamp01(value / normal) * peaks, z);
