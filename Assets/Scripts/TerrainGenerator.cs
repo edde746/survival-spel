@@ -63,15 +63,15 @@ public class TerrainGenerator : MonoBehaviour
             vertex++;
         }
 
-        //colors = new Color[vertecies.Length];
+        colors = new Color[vertecies.Length];
 
-        //for (int idx = 0, z = 0; z <= width; z++)
-        //{
-        //    for (int x = 0; x <= height; x++, idx++)
-        //    {
-        //        colors[idx] = WorldGeneration.Instance.heightColors.Evaluate(vertecies[idx].y / peaks);
-        //    }
-        //}
+        for (int idx = 0, z = 0; z <= width; z++)
+        {
+            for (int x = 0; x <= height; x++, idx++)
+            {
+                colors[idx] = WorldGeneration.Instance.heightColors.Evaluate(vertecies[idx].y / WorldGeneration.Instance.peaks);
+            }
+        }
     }
 
     void UpdateMesh()
@@ -80,7 +80,7 @@ public class TerrainGenerator : MonoBehaviour
 
         mesh.vertices = vertecies;
         mesh.triangles = triangles;
-        //mesh.colors = colors;
+        mesh.colors = colors;
 
         mesh.RecalculateNormals();
         mesh.RecalculateBounds();
