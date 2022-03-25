@@ -16,7 +16,7 @@ public class ObjectPlacer : MonoBehaviour
     {
         var point = new Vector3(center.x + Random.Range(range / -2f, range / 2f), 200f, center.z + Random.Range(range / -2f, range / 2f));
         RaycastHit hit;
-        if (findFloor && Physics.Raycast(point, Vector3.down, out hit, Mathf.Infinity, Physics.AllLayers))
+        if (findFloor && Physics.Raycast(point, Vector3.down, out hit, Mathf.Infinity, 1 << 6))
         {
             point.y = hit.point.y + yOffset;
             // Check if we are below water level
