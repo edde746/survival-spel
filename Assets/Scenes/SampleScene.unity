@@ -185,6 +185,7 @@ MonoBehaviour:
   groupRange: 35
   minGroupCount: 30
   maxGroupCount: 45
+  alignWithGround: 1
 --- !u!4 &447044824
 Transform:
   m_ObjectHideFlags: 0
@@ -358,6 +359,7 @@ MonoBehaviour:
   groupRange: 100
   minGroupCount: 10
   maxGroupCount: 15
+  alignWithGround: 0
 --- !u!4 &755094196
 Transform:
   m_ObjectHideFlags: 0
@@ -550,6 +552,7 @@ MonoBehaviour:
   groupRange: 0
   minGroupCount: 0
   maxGroupCount: 0
+  alignWithGround: 1
 --- !u!1001 &6696733777641370689
 PrefabInstance:
   m_ObjectHideFlags: 0

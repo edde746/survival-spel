@@ -11,8 +11,9 @@ public class ObjectPlacer : MonoBehaviour
     public bool mixGroups = false;
     public float groupRange;
     public int minGroupCount, maxGroupCount;
+    public bool alignWithGround = true;
 
-    Vector3 RandomSpot(Vector3 center, float range, bool findFloor = true)
+    (Vector3 position, Vector3 normal) RandomSpot(Vector3 center, float range, bool findFloor = true)
     {
         var point = new Vector3(center.x + Random.Range(range / -2f, range / 2f), 200f, center.z + Random.Range(range / -2f, range / 2f));
         RaycastHit hit;
@@ -20,10 +21,11 @@ public class ObjectPlacer : MonoBehaviour
         {
             point.y = hit.point.y + yOffset;
             // Check if we are below water level
-            if (point.y < 10f) return RandomSpot(center, range, findFloor);
+            if (point.y < 12.5f) return RandomSpot(center, range, findFloor);
+            return (point, hit.normal);
         }
 
-        return point;
+        return (point, Vector3.zero);
     }
 
     GameObject GetRandomObject()
@@ -44,7 +46,10 @@ public class ObjectPlacer : MonoBehaviour
                 for (int j = 0; j < groupSize; j++)
                 {
                     objectToSpawn = !objectToSpawn || mixGroups ? GetRandomObject() : objectToSpawn;
-                    Instantiate(objectToSpawn, RandomSpot(groupPoint, groupRange), Quaternion.Euler(0f, Random.Range(0f, 360f), 0f));
+                    var spot = RandomSpot(groupPoint.position, groupRange);
+                    var newObject = Instantiate(objectToSpawn, spot.position, Quaternion.Euler(0f, Random.Range(0f, 360f), 0f));
+                    if (alignWithGround)
+                        newObject.transform.rotation = Quaternion.FromToRotation(transform.up, spot.normal) * newObject.transform.rotation;
                 }
 
             }
@@ -53,7 +58,10 @@ public class ObjectPlacer : MonoBehaviour
         {
             for (int i = 0; i < objectsToPlace; i++)
             {
-                Instantiate(GetRandomObject(), RandomSpot(WorldGeneration.centerPoint, WorldGeneration.size), Quaternion.Euler(0f, Random.Range(0f, 360f), 0f));
+                var spot = RandomSpot(WorldGeneration.centerPoint, WorldGeneration.size);
+                var newObject = Instantiate(GetRandomObject(), spot.position, Quaternion.Euler(0f, Random.Range(0f, 360f), 0f));
+                if (alignWithGround)
+                    newObject.transform.rotation = Quaternion.FromToRotation(transform.up, spot.normal) * newObject.transform.rotation;
             }
         }
     }
