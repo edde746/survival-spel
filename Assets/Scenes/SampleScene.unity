@@ -245,6 +245,7 @@ GameObject:
   m_Component:
   - component: {fileID: 594705684}
   - component: {fileID: 594705683}
+  - component: {fileID: 594705685}
   m_Layer: 0
   m_Name: Settings
   m_TagString: Untagged
@@ -319,6 +320,27 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &594705685
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 594705682}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 936cb07f50a3b364cada15e913664873, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  items:
+  - id: 1
+    name: Pickaxe
+    icon: {fileID: 2800000, guid: f24d48ec14e96d74ca6c3a77ff20970d, type: 3}
+    model: {fileID: 919132149155446097, guid: f88bd337c3ab74efb837e50103a00791, type: 3}
+  - id: 2
+    name: Axe
+    icon: {fileID: 2800000, guid: f24d48ec14e96d74ca6c3a77ff20970d, type: 3}
+    model: {fileID: 919132149155446097, guid: e7d209e7f59bb4f538b4f15882f54e85, type: 3}
 --- !u!1 &755094194
 GameObject:
   m_ObjectHideFlags: 0
