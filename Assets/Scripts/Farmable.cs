@@ -10,12 +10,9 @@ public class Farmable : MonoBehaviour
     public int itemAmount = 1;
     public int item = -1;
 
-    public void ApplyDamage(float amount)
+    public virtual bool ApplyDamage(float amount)
     {
         health -= amount;
-        if (health <= 0f)
-        {
-            Destroy(gameObject, .5f);
-        }
+        return health > 0f;
     }
 }

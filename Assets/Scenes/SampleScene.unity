@@ -247,8 +247,9 @@ GameObject:
   - component: {fileID: 594705684}
   - component: {fileID: 594705683}
   - component: {fileID: 594705685}
+  - component: {fileID: 594705686}
   m_Layer: 0
-  m_Name: Settings
+  m_Name: Settings & Items
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -319,7 +320,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &594705685
 MonoBehaviour:
@@ -368,6 +369,19 @@ MonoBehaviour:
     model: {fileID: 0}
     modelOffset: {x: 0, y: 0, z: 0}
     stats: []
+--- !u!114 &594705686
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 594705682}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6518f456bf3e1493b8a140988ebeaba6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rockDestroyParticle: {fileID: 5616137814035081872, guid: 1c1ca99a159654b72877466d8c571f34, type: 3}
 --- !u!1 &755094194
 GameObject:
   m_ObjectHideFlags: 0
@@ -445,7 +459,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4373080667063482959, guid: 8205d36f5448674429e263cd4800fd0a, type: 3}
       propertyPath: m_RootOrder
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4373080667063482959, guid: 8205d36f5448674429e263cd4800fd0a, type: 3}
       propertyPath: m_LocalScale.x
@@ -540,7 +554,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1293359452
 GameObject:
@@ -627,7 +641,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6696733777694383789, guid: a4bafdbbcd584408d9fc4a5153277fcb, type: 3}
       propertyPath: m_RootOrder
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 6696733777694383789, guid: a4bafdbbcd584408d9fc4a5153277fcb, type: 3}
       propertyPath: m_LocalPosition.x

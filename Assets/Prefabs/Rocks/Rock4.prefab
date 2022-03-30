@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 7462569862155546290}
   - component: {fileID: 7462569862154447986}
   - component: {fileID: 64907757131387574}
-  - component: {fileID: 292529344644009042}
+  - component: {fileID: 1062955418205498045}
   m_Layer: 0
   m_Name: Rock4
   m_TagString: Untagged
@@ -99,7 +99,7 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 4300000, guid: 4c3cbb765dc1a514e95c24a788dcf485, type: 3}
---- !u!114 &292529344644009042
+--- !u!114 &1062955418205498045
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -108,7 +108,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 7462569862156710578}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cdfe6ef8b0dce8246a27e46476efd08f, type: 3}
+  m_Script: {fileID: 11500000, guid: 310f79311342a44f1a635d548e333f5b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   health: 175
