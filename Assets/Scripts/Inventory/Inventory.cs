@@ -11,6 +11,8 @@ public class Inventory : MonoBehaviour
     GUIStyle selectedStyle;
     GUIStyle unselectedStyle;
     GameObject itemAnchor;
+    [HideInInspector]
+    public GameObject activeItemModel;
 
     public static Inventory Instance { get; private set; }
 
@@ -32,6 +34,7 @@ public class Inventory : MonoBehaviour
         // Give player test item
         GiveItem(1, 1);
         GiveItem(2, 1);
+        SetActiveItem(1);
         // GiveItem(3, 10);
     }
 
@@ -45,20 +48,16 @@ public class Inventory : MonoBehaviour
     {
         hotbarActiveItem = Mathf.Clamp(hotbarIndex, 0, 4);
 
-        // Destroy current item(s)
-        foreach (Transform child in itemAnchor.transform)
-        {
-            Destroy(child.gameObject);
-        }
+        Destroy(activeItemModel);
 
         // Update model in hands
         var activeItem = items[0, hotbarActiveItem];
         if (activeItem.item != null && activeItem.item.model != null)
         {
-            var itemModel = Instantiate(activeItem.item.model, Vector3.zero, Quaternion.identity);
-            itemModel.transform.SetParent(itemAnchor.transform);
-            itemModel.transform.localEulerAngles = Vector3.zero;
-            itemModel.transform.localPosition = activeItem.item.modelOffset;
+            activeItemModel = Instantiate(activeItem.item.model, Vector3.zero, Quaternion.identity);
+            activeItemModel.transform.SetParent(itemAnchor.transform);
+            activeItemModel.transform.localEulerAngles = Vector3.zero;
+            activeItemModel.transform.localPosition = activeItem.item.modelOffset;
         }
     }
 
@@ -100,7 +99,7 @@ public class Inventory : MonoBehaviour
             GUI.Box(box,
                 items[0, i].item != null ? new GUIContent { image = items[0, i].item.icon } : GUIContent.none,
                 i == hotbarActiveItem ? selectedStyle : unselectedStyle);
-            if (items[0, i].count > 0)
+            if (items[0, i].count > 1)
                 GUI.Label(box, $"{items[0, i].count}", new GUIStyle { alignment = TextAnchor.LowerRight });
         }
     }

@@ -31,37 +31,27 @@ public class PlayerScript : MonoBehaviour
         if (Input.GetButton("Fire1") && cooldown < 0f)
         {
             var activeItem = Inventory.Instance.GetActiveItem();
-            if (activeItem != null)
-            {
-                var itemCooldown = activeItem.GetStat("cooldown");
-                if (itemCooldown > 0f)
-                {
-                    cooldown = itemCooldown;
-                }
-                else
-                {
-                    cooldown = 1f;
-                }
-            }
-            else
-            {
-                cooldown = 1f;
-            }
+            cooldown = activeItem?.GetStat("cooldown") ?? 1f;
 
             RaycastHit hit;
             if (Physics.Raycast(camera.transform.position, camera.transform.forward, out hit, 5f, ~(1 << 2)))
             {
                 var farmable = hit.transform.gameObject.GetComponent<Farmable>();
-                if (farmable)
+                if (farmable && (farmable.toolType == ItemType.Any || farmable.toolType == activeItem.type))
                 {
-                    if (farmable.toolType == ItemType.Any || farmable.toolType == activeItem.type)
-                    {
-                        farmable.health -= activeItem.GetStat("damage");
-                        // TODO: Implement gather amount
-                        Inventory.Instance.GiveItem(farmable.item, farmable.itemAmount);
-                    }
+                    StartCoroutine(Farm(farmable, activeItem));
                 }
             }
         }
+    }
+
+    IEnumerator Farm(Farmable farmable, Item activeItem)
+    {
+        farmable.ApplyDamage(activeItem.GetStat("damage"));
+        Inventory.Instance.activeItemModel.GetComponent<Animator>().SetTrigger("Use");
+        yield return new WaitForSeconds(1);
+        var giveAmount = (int)Mathf.Floor(farmable.itemAmount * (1f - farmable.health / farmable.maxHealth));
+        farmable.itemAmount -= giveAmount;
+        Inventory.Instance.GiveItem(farmable.item, giveAmount);
     }
 }
