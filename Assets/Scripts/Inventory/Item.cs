@@ -32,6 +32,6 @@ public class Item
     public float GetStat(string name)
     {
         var stat = stats.Find(stat => stat.name == name);
-        return stat != null ? stat.value : 0f;
+        return stat != null ? stat.value : 1f;
     }
 }

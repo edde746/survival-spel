@@ -48,7 +48,7 @@ public class PlayerScript : MonoBehaviour
     IEnumerator Farm(Farmable farmable, Item activeItem)
     {
         farmable.ApplyDamage(activeItem.GetStat("damage"));
-        Inventory.Instance.activeItemModel.GetComponent<Animator>().SetTrigger("Use");
+        Inventory.Instance.activeItemModel.GetComponent<Animator>()?.SetTrigger("Use");
         yield return new WaitForSeconds(1);
         var giveAmount = (int)Mathf.Floor(farmable.itemAmount * (1f - farmable.health / farmable.maxHealth));
         farmable.itemAmount -= giveAmount;
