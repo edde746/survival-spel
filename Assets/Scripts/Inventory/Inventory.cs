@@ -1,10 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class Inventory : MonoBehaviour
 {
-    public Item[,] items;
+    public (Item item, int count)[,] items;
     public int hotbarActiveItem;
     // TODO: Scale for screen resolution
     int itemBoxSize = 50;
@@ -13,16 +12,27 @@ public class Inventory : MonoBehaviour
     GUIStyle unselectedStyle;
     GameObject itemAnchor;
 
+    public static Inventory Instance { get; private set; }
+
+    void Awake()
+    {
+        if (Instance != null)
+            return;
+
+        Instance = this;
+    }
+
     void Start()
     {
-        items = new Item[4, 5];
+        items = new (Item item, int count)[4, 5];
         unselectedStyle = new GUIStyle { normal = new GUIStyleState { background = Texture2D.linearGrayTexture } };
         selectedStyle = new GUIStyle { normal = new GUIStyleState { background = Texture2D.whiteTexture } };
         itemAnchor = GameObject.FindGameObjectWithTag("ItemAnchor");
 
         // Give player test item
-        items[0, 0] = ItemDatabase.GetItem(1);
-        items[0, 1] = ItemDatabase.GetItem(2);
+        GiveItem(1, 1);
+        GiveItem(2, 1);
+        // GiveItem(3, 10);
     }
 
     void Update()
@@ -42,22 +52,56 @@ public class Inventory : MonoBehaviour
         }
 
         // Update model in hands
-        if (items[0, hotbarActiveItem] != null)
+        var activeItem = items[0, hotbarActiveItem];
+        if (activeItem.item != null && activeItem.item.model != null)
         {
-            var itemModel = Instantiate(items[0, hotbarActiveItem].model, Vector3.zero, Quaternion.identity);
+            var itemModel = Instantiate(activeItem.item.model, Vector3.zero, Quaternion.identity);
             itemModel.transform.SetParent(itemAnchor.transform);
             itemModel.transform.localEulerAngles = Vector3.zero;
-            itemModel.transform.localPosition = Vector3.zero;
+            itemModel.transform.localPosition = activeItem.item.modelOffset;
         }
+    }
+
+    public bool GiveItem(int id, int count = 1)
+    {
+        var rows = items.GetLength(0);
+        var cols = items.GetLength(1);
+
+        for (int r = 0; r < rows; r++)
+        {
+            for (int c = 0; c < cols; c++ /* lol */)
+            {
+                if (items[r, c].count == 0)
+                {
+                    items[r, c] = (item: ItemDatabase.GetItem(id), count: count);
+                    return true;
+                }
+                else if (items[r, c].item != null && items[r, c].item.id == id)
+                {
+                    items[r, c].count += count;
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    public Item GetActiveItem()
+    {
+        return items[0, hotbarActiveItem].item;
     }
 
     void OnGUI()
     {
         for (int i = 0; i < 5; i++)
         {
-            GUI.Box(new Rect((Screen.width / 2 - 2.5f * (itemBoxSize + itemBoxPadding)) + i * (itemBoxSize + itemBoxPadding), Screen.height - (itemBoxSize + itemBoxPadding), itemBoxSize, itemBoxSize),
-                items[0, i] != null ? new GUIContent { image = items[0, i].icon } : GUIContent.none,
+            var box = new Rect((Screen.width / 2 - 2.5f * (itemBoxSize + itemBoxPadding)) + i * (itemBoxSize + itemBoxPadding), Screen.height - (itemBoxSize + itemBoxPadding), itemBoxSize, itemBoxSize);
+            GUI.Box(box,
+                items[0, i].item != null ? new GUIContent { image = items[0, i].item.icon } : GUIContent.none,
                 i == hotbarActiveItem ? selectedStyle : unselectedStyle);
+            if (items[0, i].count > 0)
+                GUI.Label(box, $"{items[0, i].count}", new GUIStyle { alignment = TextAnchor.LowerRight });
         }
     }
 }
