@@ -353,7 +353,7 @@ MonoBehaviour:
     name: Stone Axe
     type: 1
     stackable: 0
-    icon: {fileID: 2800000, guid: f24d48ec14e96d74ca6c3a77ff20970d, type: 3}
+    icon: {fileID: 2800000, guid: 5ca02d8f9f32541c38bb9f1a6e261837, type: 3}
     model: {fileID: 919132149155446097, guid: e7d209e7f59bb4f538b4f15882f54e85, type: 3}
     modelOffset: {x: 0, y: 0.15, z: 0}
     stats:
