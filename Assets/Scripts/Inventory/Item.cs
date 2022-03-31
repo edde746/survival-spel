@@ -1,12 +1,13 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-public enum ItemType
+[System.Flags]
+public enum ItemFlags
 {
-    Any = 0,
-    Axe = 1,
-    Pickaxe = 2,
-    Resource = 3
+    MineWood = 1 << 1,
+    MineRock = 1 << 2,
+    Resource = 1 << 3,
+    DontShowInHand = 1 << 4
 }
 
 [System.Serializable]
@@ -16,17 +17,14 @@ public class Stat
     public float value;
 }
 
-[System.Serializable]
-public class Item
+[CreateAssetMenu(fileName = "New Item", menuName = "Assets/Item")]
+public class Item : ScriptableObject
 {
     public int id = -1;
-    public string name;
-    public ItemType type;
-    public bool stackable = true;
-    public int stackSize = 1000;
+    public ItemFlags flags;
+    public int stackable = 0;
     public Texture icon;
     public GameObject model;
-    public Vector3 modelOffset = Vector3.zero;
     [SerializeField]
     public List<Stat> stats;
 
@@ -35,4 +33,17 @@ public class Item
         var stat = stats.Find(stat => stat.name == name);
         return stat != null ? stat.value : 1f;
     }
+}
+
+[System.Serializable]
+public struct ItemEntry
+{
+    public ItemEntry(Item item, int count)
+    {
+        this.item = item;
+        this.count = count;
+    }
+
+    public Item item;
+    public int count;
 }

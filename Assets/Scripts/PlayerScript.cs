@@ -34,7 +34,7 @@ public class PlayerScript : MonoBehaviour
             if (Physics.Raycast(playerCamera.transform.position, playerCamera.transform.forward, out hit, 5f, ~(1 << 2)))
             {
                 var farmable = hit.transform.gameObject.GetComponent<Farmable>();
-                if (farmable != null && (farmable.toolType == ItemType.Any || farmable.toolType == activeItem?.type))
+                if (farmable != null && (farmable.toolType != 0 || activeItem.flags.HasFlag(farmable.toolType)))
                 {
                     StartCoroutine(Farm(farmable, activeItem));
                 }

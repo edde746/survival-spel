@@ -6,7 +6,7 @@ public class Rock : Farmable
 {
     Rock()
     {
-        toolType = ItemType.Pickaxe;
+        toolType = ItemFlags.MineRock;
         item = 3;
     }
 

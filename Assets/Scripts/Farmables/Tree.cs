@@ -6,7 +6,7 @@ public class Tree : Farmable
 {
     Tree()
     {
-        toolType = ItemType.Axe;
+        toolType = ItemFlags.MineWood;
         item = 4;
     }
 

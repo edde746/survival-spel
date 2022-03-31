@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class Inventory : MonoBehaviour
 {
-    public (Item item, int count)[,] items;
+    public ItemEntry[,] items;
     public int hotbarActiveItem;
     // TODO: Scale for screen resolution
     Vector2 itemBoxSize;
@@ -31,7 +31,7 @@ public class Inventory : MonoBehaviour
     void Start()
     {
         itemBoxSize = new Vector2(50f, 50f);
-        items = new (Item item, int count)[4, 5];
+        items = new ItemEntry[4, 5];
         rows = items.GetLength(0);
         columns = items.GetLength(1);
 
@@ -91,7 +91,7 @@ public class Inventory : MonoBehaviour
             activeItemModel = Instantiate(activeItem.item.model, Vector3.zero, Quaternion.identity);
             activeItemModel.transform.SetParent(itemAnchor.transform);
             activeItemModel.transform.localEulerAngles = Vector3.zero;
-            activeItemModel.transform.localPosition = activeItem.item.modelOffset;
+            activeItemModel.transform.localPosition = Vector3.zero;
         }
     }
 
@@ -101,19 +101,19 @@ public class Inventory : MonoBehaviour
 
         var item = ItemDatabase.GetItem(id);
         // First pass look to stack it
-        if (item.stackable)
+        if (item.stackable > 0)
         {
             for (int r = 0; r < rows; r++)
             {
                 for (int c = 0; c < columns; c++ /* lol */)
                 {
                     ref var slot = ref items[r, c];
-                    if (slot.item != null && slot.item.id == id && slot.count < item.stackSize)
+                    if (slot.item != null && slot.item.id == id && slot.count < item.stackable)
                     {
-                        if (slot.count + count > slot.item.stackSize)
+                        if (slot.count + count > slot.item.stackable)
                         {
-                            var itemOverflow = (slot.count + count) - slot.item.stackSize;
-                            slot.count = slot.item.stackSize;
+                            var itemOverflow = (slot.count + count) - slot.item.stackable;
+                            slot.count = slot.item.stackable;
                             return GiveItem(id, itemOverflow);
                         }
                         else
@@ -133,7 +133,7 @@ public class Inventory : MonoBehaviour
             {
                 if (items[r, c].count == 0)
                 {
-                    items[r, c] = (item, count);
+                    items[r, c] = new ItemEntry(item, count);
                     return true;
                 }
             }
@@ -173,9 +173,8 @@ public class Inventory : MonoBehaviour
 
                 if (slot.item?.id == source.item?.id)
                 {
-                    Debug.Log(1);
                     var totalCount = source.count + slot.count;
-                    slot.count = Mathf.Min(totalCount, slot.item.stackSize);
+                    slot.count = Mathf.Min(totalCount, slot.item.stackable);
                     if (totalCount > slot.count)
                     {
                         source.count = totalCount - slot.count;
