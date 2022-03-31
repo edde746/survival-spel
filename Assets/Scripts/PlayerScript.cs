@@ -6,9 +6,10 @@ using UnityEngine;
 public class PlayerScript : MonoBehaviour
 {
     public Vector3 spawnPoint;
-    Camera camera;
-    public float cooldown = 0f;
+    Camera playerCamera;
     public float spawnRadius = 300f;
+    bool itemBusy = false;
+
     void Start()
     {
         // Set spawnpoint
@@ -20,21 +21,17 @@ public class PlayerScript : MonoBehaviour
         transform.position = point;
 
         // Get camera
-        camera = GetComponentInChildren<Camera>();
+        playerCamera = GetComponentInChildren<Camera>();
     }
 
     void Update()
     {
-        if (cooldown > -0.1f)
-            cooldown -= Time.deltaTime;
-
-        if (Input.GetButton("Fire1") && cooldown < 0f)
+        if (Input.GetButton("Fire1") && !itemBusy)
         {
             var activeItem = Inventory.Instance.GetActiveItem();
-            cooldown = activeItem?.GetStat("cooldown") ?? 1f;
 
             RaycastHit hit;
-            if (Physics.Raycast(camera.transform.position, camera.transform.forward, out hit, 5f, ~(1 << 2)))
+            if (Physics.Raycast(playerCamera.transform.position, playerCamera.transform.forward, out hit, 5f, ~(1 << 2)))
             {
                 var farmable = hit.transform.gameObject.GetComponent<Farmable>();
                 if (farmable != null && (farmable.toolType == ItemType.Any || farmable.toolType == activeItem?.type))
@@ -47,13 +44,18 @@ public class PlayerScript : MonoBehaviour
 
     IEnumerator Farm(Farmable farmable, Item activeItem)
     {
+        itemBusy = true;
+        // Apply damage & start tool animation
         farmable.ApplyDamage(activeItem.GetStat("damage"));
         Inventory.Instance.activeItemModel.GetComponent<Animator>()?.SetBool("Using", true);
         yield return new WaitForSeconds((activeItem?.GetStat("cooldown") ?? 1f) * .5f);
+        // Award items to player
         var giveAmount = (int)Mathf.Floor(farmable.itemAmount * (1f - farmable.health / farmable.maxHealth));
         farmable.itemAmount -= giveAmount;
         Inventory.Instance.GiveItem(farmable.item, giveAmount);
+        // Wait then stop animation
         yield return new WaitForSeconds((activeItem?.GetStat("cooldown") ?? 1f) * .5f);
         Inventory.Instance.activeItemModel.GetComponent<Animator>()?.SetBool("Using", false);
+        itemBusy = false;
     }
 }

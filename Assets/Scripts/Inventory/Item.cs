@@ -23,6 +23,7 @@ public class Item
     public string name;
     public ItemType type;
     public bool stackable = true;
+    public int stackSize = 1000;
     public Texture icon;
     public GameObject model;
     public Vector3 modelOffset = Vector3.zero;

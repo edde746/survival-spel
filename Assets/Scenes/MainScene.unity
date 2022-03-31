@@ -339,6 +339,7 @@ MonoBehaviour:
     name: Stone Pickaxe
     type: 2
     stackable: 0
+    stackSize: 1000
     icon: {fileID: 2800000, guid: f24d48ec14e96d74ca6c3a77ff20970d, type: 3}
     model: {fileID: 8844194927967444564, guid: 3ddd8b93a48324b7bb8e78206ea1cd8f, type: 3}
     modelOffset: {x: 0, y: 0, z: 0}
@@ -353,6 +354,7 @@ MonoBehaviour:
     name: Stone Axe
     type: 1
     stackable: 0
+    stackSize: 1000
     icon: {fileID: 2800000, guid: 5ca02d8f9f32541c38bb9f1a6e261837, type: 3}
     model: {fileID: 367895759796392185, guid: ad3939b01f5784f90a4314f1678b6f8c, type: 3}
     modelOffset: {x: 0, y: 0.15, z: 0}
@@ -365,6 +367,7 @@ MonoBehaviour:
     name: Stone
     type: 3
     stackable: 1
+    stackSize: 1000
     icon: {fileID: 2800000, guid: 6799478a4fb1b0d4192fa78ee2b6f0c1, type: 3}
     model: {fileID: 0}
     modelOffset: {x: 0, y: 0, z: 0}
@@ -373,6 +376,7 @@ MonoBehaviour:
     name: Wood
     type: 3
     stackable: 1
+    stackSize: 500
     icon: {fileID: 2800000, guid: fe3dd9752a1434f47a4cf569d6325baa, type: 3}
     model: {fileID: 0}
     modelOffset: {x: 0, y: 0, z: 0}

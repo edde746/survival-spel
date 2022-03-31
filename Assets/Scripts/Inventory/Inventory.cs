@@ -97,18 +97,43 @@ public class Inventory : MonoBehaviour
 
     public bool GiveItem(int id, int count = 1)
     {
+        if (count <= 0) return false;
+
+        var item = ItemDatabase.GetItem(id);
+        // First pass look to stack it
+        if (item.stackable)
+        {
+            for (int r = 0; r < rows; r++)
+            {
+                for (int c = 0; c < columns; c++ /* lol */)
+                {
+                    ref var slot = ref items[r, c];
+                    if (slot.item != null && slot.item.id == id && slot.count < item.stackSize)
+                    {
+                        if (slot.count + count > slot.item.stackSize)
+                        {
+                            var itemOverflow = (slot.count + count) - slot.item.stackSize;
+                            slot.count = slot.item.stackSize;
+                            return GiveItem(id, itemOverflow);
+                        }
+                        else
+                        {
+                            slot.count += count;
+                        }
+                        return true;
+                    }
+                }
+            }
+        }
+
+        // Put item in empty slot
         for (int r = 0; r < rows; r++)
         {
-            for (int c = 0; c < columns; c++ /* lol */)
+            for (int c = 0; c < columns; c++)
             {
                 if (items[r, c].count == 0)
                 {
-                    items[r, c] = (item: ItemDatabase.GetItem(id), count: count);
-                    return true;
-                }
-                else if (items[r, c].item != null && items[r, c].item.id == id)
-                {
-                    items[r, c].count += count;
+                    items[r, c] = (item, count);
                     return true;
                 }
             }
@@ -124,30 +149,49 @@ public class Inventory : MonoBehaviour
 
     void DrawItemBox(Rect box, int row, int column, GUIStyle style = null)
     {
-        ref var item = ref items[row, column];
+        ref var slot = ref items[row, column];
         var showAsEmpty = dragging && row == dragSource.row && column == dragSource.column;
         if (dragging)
         {
             // Get source box for drag operation if we do not have a source
-            if (item.count != 0 && box.Contains(Globals.ScreenMousePosition()) && dragSource.row == -1)
+            if (slot.count != 0 && box.Contains(Globals.ScreenMousePosition()) && dragSource.row == -1)
             {
                 dragSource = (row, column);
             }
         }
-        // Code repetition, I see no better way :/
-        else if (box.Contains(Globals.ScreenMousePosition()) && dragSource.row != -1)
+        else if (box.Contains(Globals.ScreenMousePosition()))
         {
-            // Handle item drop, swap slots
-            ref var source = ref items[dragSource.row, dragSource.column];
-            var copy = item;
-            item = source;
-            source = copy;
-            dragSource = (-1, -1);
-            SetActiveItem(hotbarActiveItem); // Ensure that we are holding the right item
+            // Prevent duplication 🥶
+            if (dragSource.row == row && dragSource.column == column)
+            {
+                dragSource = (-1, -1);
+            }
+            else if (dragSource.row != -1)
+            {
+                // Handle item drop, swap slots
+                ref var source = ref items[dragSource.row, dragSource.column];
+
+                if (slot.item?.id == source.item?.id)
+                {
+                    Debug.Log(1);
+                    var totalCount = source.count + slot.count;
+                    slot.count = Mathf.Min(totalCount, slot.item.stackSize);
+                    if (totalCount > slot.count)
+                    {
+                        source.count = totalCount - slot.count;
+                    }
+                }
+
+                var copy = slot;
+                slot = source;
+                source = copy;
+                dragSource = (-1, -1);
+                SetActiveItem(hotbarActiveItem); // Ensure that we are holding the right item
+            }
         }
 
-        GUI.Box(box, item.item != null && !showAsEmpty ? new GUIContent { image = item.item.icon } : GUIContent.none, style != null ? style : GUIStyle.none);
-        if (item.count > 1 && !showAsEmpty) GUI.Label(box, $"{item.count}", new GUIStyle { alignment = TextAnchor.LowerRight });
+        GUI.Box(box, slot.item != null && !showAsEmpty ? new GUIContent { image = slot.item.icon } : GUIContent.none, style != null ? style : GUIStyle.none);
+        if (slot.count > 1 && !showAsEmpty) GUI.Label(box, $"{slot.count}", new GUIStyle { alignment = TextAnchor.LowerRight });
     }
 
     void OnGUI()
