@@ -51,9 +51,11 @@ public class Inventory : MonoBehaviour
 
     void Update()
     {
+        // Hotbar scrolling
         if (Input.mouseScrollDelta.y > 0.1f) SetActiveItem(hotbarActiveItem - 1);
         else if (Input.mouseScrollDelta.y < -0.1f) SetActiveItem(hotbarActiveItem + 1);
 
+        // Handle opening & closing of inventory
         if (Input.GetKeyDown(KeyCode.Tab))
         {
             showInventoryGUI = !showInventoryGUI;
@@ -103,6 +105,46 @@ public class Inventory : MonoBehaviour
         activeItemModel = null;
     }
 
+    public int TallyItems(Item item)
+    {
+        int count = 0;
+        for (int r = 0; r < rows; r++)
+        {
+            for (int c = 0; c < columns; c++)
+            {
+                if (items[r, c].item?.id == item.id)
+                    count += items[r, c].count;
+            }
+        }
+        return count;
+    }
+
+    public void ConsumeItems(Item item, int count = 1)
+    {
+        var leftToConsume = count;
+        for (int r = 0; r < rows; r++)
+        {
+            for (int c = 0; c < columns; c++)
+            {
+                ref var slot = ref items[r, c];
+                if (slot.item.id != item.id) continue;
+
+                // Get the amount we can consume (we can't consume more than the count of the slot)
+                var canConsume = Mathf.Min(leftToConsume, slot.count);
+
+                // Consume
+                slot.count -= canConsume;
+                leftToConsume -= canConsume;
+
+                // Check if we have depleated the slot
+                if (slot.count == 0) slot.item = null;
+
+                // We have consumed the desired amount
+                if (leftToConsume == 0) return;
+            }
+        }
+    }
+
     public bool GiveItem(int id, int count = 1)
     {
         return GiveItem(ItemDatabase.GetItem(id), count);
@@ -123,10 +165,14 @@ public class Inventory : MonoBehaviour
                     ref var slot = ref items[r, c];
                     if (slot.item != null && slot.item.id == item.id && slot.count < item.stackable)
                     {
+                        // Check if the new total for the slot would be more than we can stack
                         if (slot.count + count > slot.item.stackable)
                         {
+                            // Get the overflow amount
                             var itemOverflow = (slot.count + count) - slot.item.stackable;
+                            // Set a full stack
                             slot.count = slot.item.stackable;
+                            // Give the rest
                             return GiveItem(item, itemOverflow);
                         }
 
@@ -144,9 +190,12 @@ public class Inventory : MonoBehaviour
             {
                 if (items[r, c].count == 0)
                 {
+                    // Check if we are giving more than stackable
                     if (count > item.stackable)
                     {
+                        // If so, give the max count
                         items[r, c] = new ItemEntry(item, item.stackable);
+                        // Then give the rest
                         return GiveItem(item.id, count - item.stackable);
                     }
 
@@ -198,22 +247,28 @@ public class Inventory : MonoBehaviour
                     }
                 }
 
+                // Swap the slots
                 var copy = slot;
                 slot = source;
                 source = copy;
+
+                // Release the source, refresh the active item incase it was switched
                 dragSource = (-1, -1);
-                SetActiveItem(hotbarActiveItem); // Ensure that we are holding the right item
+                SetActiveItem(hotbarActiveItem);
             }
         }
 
+        // Draw item box & count
         GUI.Box(box, slot.item != null && !showAsEmpty ? new GUIContent { image = slot.item.icon } : GUIContent.none, style != null ? style : GUIStyle.none);
         if (slot.count > 1 && !showAsEmpty) GUI.Label(box, $"{slot.count}", new GUIStyle { alignment = TextAnchor.LowerRight });
     }
 
     void OnGUI()
     {
+        // Hide the inventory UI when the crafting UI is active
         if (Crafting.Instance.showCraftingGUI) return;
 
+        // Draw the hotbar
         for (int i = 0; i < 5; i++)
         {
             var box = new Rect(
@@ -224,32 +279,35 @@ public class Inventory : MonoBehaviour
             DrawItemBox(box, 0, i, i == hotbarActiveItem ? selectedStyle : unselectedStyle);
         }
 
-        if (showInventoryGUI)
+        // Early return if UI is closed
+        if (!showInventoryGUI) return;
+
+        // Draw rest of inventory (all except hotbar that is already drawn)
+        for (int r = 1; r < rows; r++)
         {
-            for (int r = 1; r < rows; r++)
+            for (int c = 0; c < columns; c++)
             {
-                for (int c = 0; c < columns; c++)
-                {
-                    var box = new Rect(
-                        (Screen.width / 2f - columns / 2f * (itemBoxSize.x + itemBoxPadding)) + c * (itemBoxSize.x + itemBoxPadding),
-                        Screen.height - (itemBoxSize.y + itemBoxPadding) * (r + 1.25f), itemBoxSize.x, itemBoxSize.y
-                    );
+                var box = new Rect(
+                    (Screen.width / 2f - columns / 2f * (itemBoxSize.x + itemBoxPadding)) + c * (itemBoxSize.x + itemBoxPadding),
+                    Screen.height - (itemBoxSize.y + itemBoxPadding) * (r + 1.25f), itemBoxSize.x, itemBoxSize.y
+                );
 
-                    DrawItemBox(box, r, c, unselectedStyle);
-                }
+                DrawItemBox(box, r, c, unselectedStyle);
             }
-
-            if (dragging && dragSource.row != -1)
-            {
-                ref var dragSourceItem = ref items[dragSource.row, dragSource.column];
-                GUI.Box(new Rect(Globals.ScreenMousePosition() - itemBoxSize / 2f, itemBoxSize),
-                    new GUIContent { image = dragSourceItem.item.icon }, GUIStyle.none);
-            }
-
-            if (GUI.Button(new Rect((
-                Screen.width / 2f - (columns / 2f) * (itemBoxSize.x + itemBoxPadding)), Screen.height - (itemBoxSize.y + itemBoxPadding) * (rows + 1.25f) + 25f,
-                (itemBoxSize.x + itemBoxPadding) * 5, 25f), "Crafting"
-            )) Crafting.Instance.showCraftingGUI = true;
         }
+
+        // Draw the item we are currently dragging if we are currently dragging
+        if (dragging && dragSource.row != -1)
+        {
+            ref var dragSourceItem = ref items[dragSource.row, dragSource.column];
+            GUI.Box(new Rect(Globals.ScreenMousePosition() - itemBoxSize / 2f, itemBoxSize),
+                new GUIContent { image = dragSourceItem.item.icon }, GUIStyle.none);
+        }
+
+        // Button to go to crafting UI
+        if (GUI.Button(new Rect((
+            Screen.width / 2f - (columns / 2f) * (itemBoxSize.x + itemBoxPadding)), Screen.height - (itemBoxSize.y + itemBoxPadding) * (rows + 1.25f) + 25f,
+            (itemBoxSize.x + itemBoxPadding) * 5, 25f), "Crafting"
+        )) Crafting.Instance.showCraftingGUI = true;
     }
 }
