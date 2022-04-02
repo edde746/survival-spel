@@ -5,7 +5,6 @@ using UnityEngine;
 public class ItemDatabase : MonoBehaviour
 {
     public List<Item> items;
-    public List<Recipe> recipes;
 
     public static Item GetItem(int id)
     {

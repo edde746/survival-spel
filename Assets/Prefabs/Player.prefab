@@ -163,7 +163,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 796ec2d505b094382a0ae452bb0dedf2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 6
+  speed: 4
 --- !u!114 &5151914082073121828
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -177,6 +177,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hotbarActiveItem: 0
+  itemBoxSize: {x: 0, y: 0}
+  itemBoxPadding: 5
+  activeItemModel: {fileID: 0}
+  rows: 0
+  columns: 0
 --- !u!1 &6696733778028878128
 GameObject:
   m_ObjectHideFlags: 0

@@ -246,6 +246,7 @@ GameObject:
   - component: {fileID: 594705684}
   - component: {fileID: 594705683}
   - component: {fileID: 594705685}
+  - component: {fileID: 594705687}
   - component: {fileID: 594705686}
   m_Layer: 0
   m_Name: Settings & Items
@@ -339,13 +340,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 01dc3dce9212340c38751bcea11093a2, type: 2}
   - {fileID: 11400000, guid: 6ea557db5fe9c40c2b94282e9deb326f, type: 2}
   - {fileID: 11400000, guid: 88fc2f82c071f49c2bb326ee8b9d594d, type: 2}
-  recipes:
-  - input:
-    - item: {fileID: 11400000, guid: 6ea557db5fe9c40c2b94282e9deb326f, type: 2}
-      count: 50
-    - item: {fileID: 11400000, guid: 01dc3dce9212340c38751bcea11093a2, type: 2}
-      count: 100
-    output: {fileID: 11400000, guid: ea422984d4b85498cb297392afd32dfc, type: 2}
 --- !u!114 &594705686
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -359,6 +353,36 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rockDestroyParticle: {fileID: 5616137814035081872, guid: 1c1ca99a159654b72877466d8c571f34, type: 3}
+--- !u!114 &594705687
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 594705682}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 63f10fa94d7bd4170ab77cbc7106ad9c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  recipes:
+  - input:
+    - item: {fileID: 11400000, guid: 6ea557db5fe9c40c2b94282e9deb326f, type: 2}
+      count: 150
+    output: {fileID: 11400000, guid: 88fc2f82c071f49c2bb326ee8b9d594d, type: 2}
+  - input:
+    - item: {fileID: 11400000, guid: 6ea557db5fe9c40c2b94282e9deb326f, type: 2}
+      count: 100
+    - item: {fileID: 11400000, guid: 01dc3dce9212340c38751bcea11093a2, type: 2}
+      count: 100
+    output: {fileID: 11400000, guid: ea422984d4b85498cb297392afd32dfc, type: 2}
+  - input:
+    - item: {fileID: 11400000, guid: 6ea557db5fe9c40c2b94282e9deb326f, type: 2}
+      count: 150
+    - item: {fileID: 11400000, guid: 01dc3dce9212340c38751bcea11093a2, type: 2}
+      count: 50
+    output: {fileID: 11400000, guid: bb9e6e995838c42f293843f6857b1d1d, type: 2}
+  showCraftingGUI: 0
 --- !u!1 &755094194
 GameObject:
   m_ObjectHideFlags: 0

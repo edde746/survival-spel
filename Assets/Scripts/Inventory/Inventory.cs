@@ -6,15 +6,18 @@ public class Inventory : MonoBehaviour
     public ItemEntry[,] items;
     public int hotbarActiveItem;
     // TODO: Scale for screen resolution
-    Vector2 itemBoxSize;
-    int itemBoxPadding = 5;
+    [HideInInspector]
+    public Vector2 itemBoxSize;
+    [HideInInspector]
+    public int itemBoxPadding = 5;
     GUIStyle selectedStyle;
     GUIStyle unselectedStyle;
     GameObject itemAnchor;
     [HideInInspector]
     public GameObject activeItemModel;
     bool showInventoryGUI = false;
-    int rows, columns;
+    [HideInInspector]
+    public int rows, columns;
     bool dragging = false;
     (int row, int column) dragSource = (-1, -1);
 
@@ -64,6 +67,7 @@ public class Inventory : MonoBehaviour
             {
                 MouseLook.disableLook = false;
                 MouseLook.lockCursor = true;
+                Crafting.Instance.showCraftingGUI = false;
             }
         }
 
@@ -93,7 +97,10 @@ public class Inventory : MonoBehaviour
             activeItemModel.transform.SetParent(itemAnchor.transform);
             activeItemModel.transform.localEulerAngles = Vector3.zero;
             activeItemModel.transform.localPosition = Vector3.zero;
+            return;
         }
+
+        activeItemModel = null;
     }
 
     public bool GiveItem(int id, int count = 1)
@@ -205,6 +212,8 @@ public class Inventory : MonoBehaviour
 
     void OnGUI()
     {
+        if (Crafting.Instance.showCraftingGUI) return;
+
         for (int i = 0; i < 5; i++)
         {
             var box = new Rect(
@@ -236,6 +245,11 @@ public class Inventory : MonoBehaviour
                 GUI.Box(new Rect(Globals.ScreenMousePosition() - itemBoxSize / 2f, itemBoxSize),
                     new GUIContent { image = dragSourceItem.item.icon }, GUIStyle.none);
             }
+
+            if (GUI.Button(new Rect((
+                Screen.width / 2f - (columns / 2f) * (itemBoxSize.x + itemBoxPadding)), Screen.height - (itemBoxSize.y + itemBoxPadding) * (rows + 1.25f) + 25f,
+                (itemBoxSize.x + itemBoxPadding) * 5, 25f), "Crafting"
+            )) Crafting.Instance.showCraftingGUI = true;
         }
     }
 }
