@@ -268,14 +268,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   layers:
-  - seed: 0
-    frequency: 4.78
+  - frequency: 4.78
     amplitude: 1
-  - seed: 300
-    frequency: 0.02
+  - frequency: 0.02
     amplitude: 25
-  - seed: 9000
-    frequency: 0.006
+  - frequency: 0.006
     amplitude: 100
   peaks: 100
   heightColors:
@@ -307,6 +304,7 @@ MonoBehaviour:
     m_Mode: 0
     m_NumColorKeys: 3
     m_NumAlphaKeys: 2
+  seed: 123
 --- !u!4 &594705684
 Transform:
   m_ObjectHideFlags: 0

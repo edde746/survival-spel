@@ -10,9 +10,12 @@ public class TerrainGenerator : MonoBehaviour
     Vector3[] vertecies;
     int[] triangles;
     Color[] colors;
+    static Dictionary<int, float> layerSeed;
 
     void Awake()
     {
+        if (layerSeed == null)
+            layerSeed = new Dictionary<int, float>();
         mesh = new Mesh();
         GetComponent<MeshFilter>().mesh = mesh;
 
@@ -31,10 +34,14 @@ public class TerrainGenerator : MonoBehaviour
                 float value = 0f, normal = 0f;
                 float worldX = (x + transform.position.x);
                 float worldZ = (z + transform.position.z);
+                int layerIdx = 0;
                 foreach (var layer in WorldGeneration.Instance.layers)
                 {
-                    value += layer.amplitude * Mathf.PerlinNoise(worldX * layer.frequency + layer.seed, worldZ * layer.frequency + layer.seed);
+                    if (!layerSeed.ContainsKey(layerIdx))
+                        layerSeed.Add(layerIdx, Mathf.Floor(Random.Range(1000f, 9999f)));
+                    value += layer.amplitude * Mathf.PerlinNoise(worldX * layer.frequency + layerSeed[layerIdx], worldZ * layer.frequency + layerSeed[layerIdx]);
                     normal += layer.amplitude;
+                    layerIdx++;
                 }
                 value = value * (1f - Mathf.Clamp01(Vector3.Distance(WorldGeneration.centerPoint, new Vector3(worldX, 0f, worldZ)) / 500f));
 

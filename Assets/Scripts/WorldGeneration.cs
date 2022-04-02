@@ -7,7 +7,6 @@ public class WorldGeneration : MonoBehaviour
     [System.Serializable]
     public struct Layer
     {
-        public float seed;
         public float frequency;
         public float amplitude;
     }
@@ -18,11 +17,13 @@ public class WorldGeneration : MonoBehaviour
 
     public static Vector3 centerPoint;
     public Gradient heightColors;
+    public int seed;
 
     public static WorldGeneration Instance { get; private set; }
 
     void Awake()
     {
+        Random.InitState(seed);
         if (Instance != null)
             return;
 

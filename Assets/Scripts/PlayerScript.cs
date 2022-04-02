@@ -56,8 +56,7 @@ public class PlayerScript : MonoBehaviour
         itemBusy = true;
         // Apply damage & start tool animation
         farmable.ApplyDamage(activeItem.GetStat("damage"));
-        if (Inventory.Instance.activeItemModel != null)
-            Inventory.Instance.activeItemModel.GetComponent<Animator>()?.SetBool("Using", true);
+        Inventory.Instance.activeItemModel?.GetComponent<Animator>()?.SetBool("Using", true);
         yield return new WaitForSeconds((activeItem?.GetStat("cooldown") ?? 1f) * .5f);
         // Award items to player
         var giveAmount = (int)Mathf.Floor(farmable.itemAmount * (1f - farmable.health / farmable.maxHealth));
@@ -65,8 +64,7 @@ public class PlayerScript : MonoBehaviour
         Inventory.Instance.GiveItem(farmable.item, giveAmount);
         // Wait then stop animation
         yield return new WaitForSeconds((activeItem?.GetStat("cooldown") ?? 1f) * .5f);
-        if (Inventory.Instance.activeItemModel != null)
-            Inventory.Instance.activeItemModel.GetComponent<Animator>()?.SetBool("Using", false);
+        Inventory.Instance.activeItemModel?.GetComponent<Animator>()?.SetBool("Using", false);
         itemBusy = false;
     }
 
