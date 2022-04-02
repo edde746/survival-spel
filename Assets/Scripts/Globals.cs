@@ -11,6 +11,14 @@ public class Globals : MonoBehaviour
         return new Vector2(Input.mousePosition.x, Screen.height - Input.mousePosition.y);
     }
 
+    public static Texture2D SolidColorTexture(Color color)
+    {
+        Texture2D texture = new Texture2D(1, 1);
+        texture.SetPixel(0, 0, color);
+        texture.Apply();
+        return texture;
+    }
+
     public static Globals Instance { get; private set; }
 
     void Awake()

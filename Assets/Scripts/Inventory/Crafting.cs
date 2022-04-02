@@ -65,12 +65,11 @@ public class Crafting : MonoBehaviour
             foreach (var input in recipe.input)
                 requirements += $"{input.count}x {input.item.name}\n";
 
-            GUILayout.Label($"Requires:\n{requirements}");
+            GUILayout.Label($"Requires:\n{requirements.Substring(0, requirements.Length - 1)}");
             GUILayout.EndHorizontal();
         }
 
         GUILayout.EndScrollView();
         GUILayout.EndArea();
-
     }
 }
