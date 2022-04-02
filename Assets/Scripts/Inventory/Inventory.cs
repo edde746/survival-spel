@@ -43,9 +43,10 @@ public class Inventory : MonoBehaviour
         itemAnchor = GameObject.FindGameObjectWithTag("ItemAnchor");
 
         // Give player test item
-        GiveItem(1, 1);
-        GiveItem(2, 1);
-        GiveItem(5, 2);
+        GiveItem(6, 1);
+        //GiveItem(1, 1);
+        //GiveItem(2, 1);
+        //GiveItem(5, 2);
         SetActiveItem(0);
     }
 
