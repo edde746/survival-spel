@@ -15,7 +15,7 @@ public class Inventory : MonoBehaviour
     GameObject itemAnchor;
     [HideInInspector]
     public GameObject activeItemModel;
-    bool showInventoryGUI = false;
+    public bool showInventoryGUI = false;
     [HideInInspector]
     public int rows, columns;
     bool dragging = false;

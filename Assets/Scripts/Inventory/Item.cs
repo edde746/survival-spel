@@ -10,6 +10,7 @@ public enum ItemFlags
     DontShowInHand = 1 << 4,
     Placeable = 1 << 5,
     Tool = 1 << 6,
+    Food = 1 << 7
 }
 
 [System.Serializable]

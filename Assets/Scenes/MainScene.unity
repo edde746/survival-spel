@@ -142,6 +142,63 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   spawnPoint: {x: 500, y: 0, z: 500}
   spawnRadius: 300
+--- !u!1 &101986930
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 101986931}
+  - component: {fileID: 101986932}
+  m_Layer: 0
+  m_Name: Mushrooms
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &101986931
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 101986930}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 552173696}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &101986932
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 101986930}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc2e19e11c54f4ac2bae9e6454203c8a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  objects:
+  - {fileID: 385491262653265843, guid: 1ac31fb474aead74ab0101d0d6546c52, type: 3}
+  - {fileID: 3117357111836234255, guid: 5ad0841d147e6664f9ee38e733624608, type: 3}
+  - {fileID: 2807940955490974254, guid: b87c30b9056d0fb4dbb257b188a32501, type: 3}
+  - {fileID: 6352184942146035110, guid: 47ded181e73460047bae5118c0254d3e, type: 3}
+  yOffset: 0
+  objectsToPlace: 500
+  placeInGroups: 1
+  mixGroups: 0
+  groupRange: 3
+  minGroupCount: 3
+  maxGroupCount: 5
+  alignWithGround: 1
 --- !u!1 &447044822
 GameObject:
   m_ObjectHideFlags: 0
@@ -232,6 +289,7 @@ Transform:
   - {fileID: 447044824}
   - {fileID: 755094196}
   - {fileID: 1293359453}
+  - {fileID: 101986931}
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -339,6 +397,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 6ea557db5fe9c40c2b94282e9deb326f, type: 2}
   - {fileID: 11400000, guid: 88fc2f82c071f49c2bb326ee8b9d594d, type: 2}
   - {fileID: 11400000, guid: 7bd7f1bcdfd8943f59145210c728c724, type: 2}
+  - {fileID: 11400000, guid: 647439366987c4222a5498b993f7ed8f, type: 2}
 --- !u!114 &594705686
 MonoBehaviour:
   m_ObjectHideFlags: 0

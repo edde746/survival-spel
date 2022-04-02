@@ -11,6 +11,7 @@ public class PlayerScript : MonoBehaviour
     bool itemBusy = false;
     float health = 65f, hunger = 75f, thirst = 45f;
     GUIStyle healthStyle, hungerStyle, thirstStyle, emptyStyle, alertStyle;
+    bool showPickableText = false;
 
     void Start()
     {
@@ -39,6 +40,7 @@ public class PlayerScript : MonoBehaviour
 
     void Update()
     {
+        showPickableText = false;
         hunger -= Time.deltaTime * 0.09f;
         thirst -= Time.deltaTime * 0.1f;
 
@@ -50,14 +52,36 @@ public class PlayerScript : MonoBehaviour
         if (thirst < 7f)
             health -= Time.deltaTime * 0.6f;
 
-        if (Input.GetButton("Fire1") && !itemBusy)
-        {
-            ref var activeItem = ref Inventory.Instance.GetActiveItem();
-            if (activeItem.count == 0 || activeItem.item == null) return;
 
-            RaycastHit hit;
-            if (Physics.Raycast(playerCamera.transform.position, playerCamera.transform.forward, out hit, 5f, ~(1 << 2)))
+        // Interactivity
+        if (Inventory.Instance.showInventoryGUI || itemBusy) return;
+
+        ref var activeItem = ref Inventory.Instance.GetActiveItem();
+        if (activeItem.item != null && activeItem.item.flags.HasFlag(ItemFlags.Food) && Input.GetButtonDown("Fire1"))
+        {
+            hunger += activeItem.item.GetStat("hunger");
+            activeItem.Consume(1);
+            StartCoroutine(BusyFor(1f));
+        }
+
+        RaycastHit hit;
+        if (Physics.Raycast(playerCamera.transform.position, playerCamera.transform.forward, out hit, 5f, ~(1 << 2 | 1 << 6)))
+        {
+            if (hit.transform.gameObject.CompareTag("Interactable"))
             {
+                var pickable = hit.transform.GetComponent<Pickable>();
+                if (pickable != null)
+                {
+                    showPickableText = true;
+                    if (Input.GetKeyDown(KeyCode.E))
+                        pickable.Pick();
+                }
+            }
+
+            if (Input.GetButton("Fire1"))
+            {
+                if (activeItem.count == 0 || activeItem.item == null) return;
+
                 if (activeItem.item.flags.HasFlag(ItemFlags.Tool))
                 {
                     var farmable = hit.transform.gameObject.GetComponent<Farmable>();
@@ -73,6 +97,13 @@ public class PlayerScript : MonoBehaviour
                 }
             }
         }
+    }
+
+    IEnumerator BusyFor(float time)
+    {
+        itemBusy = true;
+        yield return new WaitForSeconds(time);
+        itemBusy = false;
     }
 
     IEnumerator Farm(Farmable farmable, Item activeItem)
@@ -111,7 +142,7 @@ public class PlayerScript : MonoBehaviour
         drawY -= vitalsBarSize.y + 5f;
     }
 
-    GUIStyle textStyle;
+    GUIStyle textStyle, textCenterStyle;
     void DrawBar(string text, GUIStyle style, ref float drawY)
     {
         if (textStyle == null)
@@ -124,6 +155,9 @@ public class PlayerScript : MonoBehaviour
 
     void OnGUI()
     {
+        if (textCenterStyle == null)
+            textCenterStyle = new GUIStyle { alignment = TextAnchor.MiddleCenter, normal = new GUIStyleState { textColor = Color.white } };
+
         var drawY = Screen.height - (vitalsBarSize.y + 5f);
 
         DrawBar(thirst / 100f, thirstStyle, ref drawY);
@@ -137,5 +171,8 @@ public class PlayerScript : MonoBehaviour
         // Display to the user that they are dehydrated
         if (thirst < 7f)
             DrawBar("Dehydrated", alertStyle, ref drawY);
+
+        if (showPickableText)
+            GUI.Label(new Rect(Screen.width / 2f - 100f, Screen.height / 2f - 10f, 200f, 20f), "Press [E] to pick", textCenterStyle);
     }
 }
