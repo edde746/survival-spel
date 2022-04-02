@@ -113,6 +113,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   health: 75
   maxHealth: 75
-  toolType: 2
+  toolType: 4
   itemAmount: 59
   item: 3

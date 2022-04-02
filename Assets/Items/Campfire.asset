@@ -10,13 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3ed7742dc7cdbdc43ac60fd0ed8689eb, type: 3}
-  m_Name: Axe
+  m_Name: Campfire
   m_EditorClassIdentifier: 
-  id: 2
-  flags: 66
+  id: 5
+  flags: 48
   stackable: 1
-  icon: {fileID: 2800000, guid: 5ca02d8f9f32541c38bb9f1a6e261837, type: 3}
-  model: {fileID: 367895759796392185, guid: ad3939b01f5784f90a4314f1678b6f8c, type: 3}
-  stats:
-  - name: damage
-    value: 25
+  icon: {fileID: 2800000, guid: bf406080c31e84c15a24d3976c9278f4, type: 3}
+  model: {fileID: 501295248943222296, guid: d6a5e2c4aefa6804b8f7d2af9a9676b5, type: 3}
+  stats: []

@@ -42,6 +42,7 @@ public class Inventory : MonoBehaviour
         // Give player test item
         GiveItem(1, 1);
         GiveItem(2, 1);
+        GiveItem(5, 2);
         SetActiveItem(0);
     }
 
@@ -86,7 +87,7 @@ public class Inventory : MonoBehaviour
 
         // Update model in hands
         var activeItem = items[0, hotbarActiveItem];
-        if (activeItem.item != null && activeItem.item.model != null)
+        if (activeItem.item != null && activeItem.item.model != null && !activeItem.item.flags.HasFlag(ItemFlags.DontShowInHand))
         {
             activeItemModel = Instantiate(activeItem.item.model, Vector3.zero, Quaternion.identity);
             activeItemModel.transform.SetParent(itemAnchor.transform);
@@ -97,10 +98,15 @@ public class Inventory : MonoBehaviour
 
     public bool GiveItem(int id, int count = 1)
     {
-        if (count <= 0) return false;
+        return GiveItem(ItemDatabase.GetItem(id), count);
+    }
 
-        var item = ItemDatabase.GetItem(id);
-        // First pass look to stack it
+    // 🍝🍝🍝
+    public bool GiveItem(Item item, int count = 1)
+    {
+        if (count <= 0 || !item) return false;
+
+        // First pass to stack it
         if (item.stackable > 0)
         {
             for (int r = 0; r < rows; r++)
@@ -108,18 +114,16 @@ public class Inventory : MonoBehaviour
                 for (int c = 0; c < columns; c++ /* lol */)
                 {
                     ref var slot = ref items[r, c];
-                    if (slot.item != null && slot.item.id == id && slot.count < item.stackable)
+                    if (slot.item != null && slot.item.id == item.id && slot.count < item.stackable)
                     {
                         if (slot.count + count > slot.item.stackable)
                         {
                             var itemOverflow = (slot.count + count) - slot.item.stackable;
                             slot.count = slot.item.stackable;
-                            return GiveItem(id, itemOverflow);
+                            return GiveItem(item, itemOverflow);
                         }
-                        else
-                        {
-                            slot.count += count;
-                        }
+
+                        slot.count += count;
                         return true;
                     }
                 }
@@ -133,6 +137,12 @@ public class Inventory : MonoBehaviour
             {
                 if (items[r, c].count == 0)
                 {
+                    if (count > item.stackable)
+                    {
+                        items[r, c] = new ItemEntry(item, item.stackable);
+                        return GiveItem(item.id, count - item.stackable);
+                    }
+
                     items[r, c] = new ItemEntry(item, count);
                     return true;
                 }
@@ -142,9 +152,9 @@ public class Inventory : MonoBehaviour
         return false;
     }
 
-    public Item GetActiveItem()
+    public ref ItemEntry GetActiveItem()
     {
-        return items[0, hotbarActiveItem].item;
+        return ref items[0, hotbarActiveItem];
     }
 
     void DrawItemBox(Rect box, int row, int column, GUIStyle style = null)

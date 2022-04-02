@@ -28,15 +28,24 @@ public class PlayerScript : MonoBehaviour
     {
         if (Input.GetButton("Fire1") && !itemBusy)
         {
-            var activeItem = Inventory.Instance.GetActiveItem();
+            ref var activeItem = ref Inventory.Instance.GetActiveItem();
+            if (activeItem.count == 0 || activeItem.item == null) return;
 
             RaycastHit hit;
             if (Physics.Raycast(playerCamera.transform.position, playerCamera.transform.forward, out hit, 5f, ~(1 << 2)))
             {
-                var farmable = hit.transform.gameObject.GetComponent<Farmable>();
-                if (farmable != null && (farmable.toolType != 0 || activeItem.flags.HasFlag(farmable.toolType)))
+                if (activeItem.item.flags.HasFlag(ItemFlags.Tool))
                 {
-                    StartCoroutine(Farm(farmable, activeItem));
+                    var farmable = hit.transform.gameObject.GetComponent<Farmable>();
+                    if (farmable != null && (farmable.toolType != 0 || activeItem.item.flags.HasFlag(farmable.toolType)))
+                    {
+                        StartCoroutine(Farm(farmable, activeItem.item));
+                    }
+                }
+                else if (activeItem.item.flags.HasFlag(ItemFlags.Placeable))
+                {
+                    StartCoroutine(Place(activeItem.item.model, hit.point));
+                    activeItem.Consume(1);
                 }
             }
         }
@@ -56,6 +65,15 @@ public class PlayerScript : MonoBehaviour
         // Wait then stop animation
         yield return new WaitForSeconds((activeItem?.GetStat("cooldown") ?? 1f) * .5f);
         Inventory.Instance.activeItemModel.GetComponent<Animator>()?.SetBool("Using", false);
+        itemBusy = false;
+    }
+
+    IEnumerator Place(GameObject model, Vector3 point)
+    {
+        itemBusy = true;
+        Instantiate(model, point, Quaternion.identity);
+        // TODO: Sound FX & PTFX
+        yield return new WaitForSeconds(.5f);
         itemBusy = false;
     }
 }

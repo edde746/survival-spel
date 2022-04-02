@@ -7,7 +7,9 @@ public enum ItemFlags
     MineWood = 1 << 1,
     MineRock = 1 << 2,
     Resource = 1 << 3,
-    DontShowInHand = 1 << 4
+    DontShowInHand = 1 << 4,
+    Placeable = 1 << 5,
+    Tool = 1 << 6,
 }
 
 [System.Serializable]
@@ -22,7 +24,7 @@ public class Item : ScriptableObject
 {
     public int id = -1;
     public ItemFlags flags;
-    public int stackable = 0;
+    public int stackable = 1;
     public Texture icon;
     public GameObject model;
     [SerializeField]
@@ -46,4 +48,14 @@ public struct ItemEntry
 
     public Item item;
     public int count;
+
+    public void Consume(int amount)
+    {
+        count -= amount;
+        if (count <= 0)
+        {
+            item = null;
+            count = 0;
+        }
+    }
 }

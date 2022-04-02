@@ -338,6 +338,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: ea422984d4b85498cb297392afd32dfc, type: 2}
   - {fileID: 11400000, guid: 01dc3dce9212340c38751bcea11093a2, type: 2}
   - {fileID: 11400000, guid: 6ea557db5fe9c40c2b94282e9deb326f, type: 2}
+  - {fileID: 11400000, guid: 88fc2f82c071f49c2bb326ee8b9d594d, type: 2}
   recipes:
   - input:
     - item: {fileID: 11400000, guid: 6ea557db5fe9c40c2b94282e9deb326f, type: 2}
