@@ -15,7 +15,7 @@ public class Crafting : MonoBehaviour
         Instance = this;
     }
 
-    void Craft(Recipe recipe)
+    public void Craft(Recipe recipe)
     {
         // Check that all requirements are met
         foreach (var requirement in recipe.input)

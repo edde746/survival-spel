@@ -58,5 +58,8 @@ public class ItemEntry
             item = null;
             count = 0;
         }
+
+        // 🍝
+        Inventory.Instance.OnInventoryChange.Invoke(Inventory.Instance.items);
     }
 }
