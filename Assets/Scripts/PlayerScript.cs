@@ -57,7 +57,7 @@ public class PlayerScript : MonoBehaviour
         if (itemBusy) return;
 
         ref var activeItem = ref Inventory.Instance.GetActiveItem();
-        if (activeItem.item != null && activeItem.item.flags.HasFlag(ItemFlags.Food) && Input.GetButtonDown("Fire1"))
+        if (activeItem != null && activeItem.item != null && activeItem.item.flags.HasFlag(ItemFlags.Food) && Input.GetButtonDown("Fire1"))
         {
             hunger += activeItem.item.GetStat("hunger");
             activeItem.Consume(1);
@@ -78,7 +78,7 @@ public class PlayerScript : MonoBehaviour
                 }
             }
 
-            if (Input.GetButton("Fire1"))
+            if (Input.GetButton("Fire1") && activeItem != null)
             {
                 if (activeItem.count == 0 || activeItem.item == null) return;
 

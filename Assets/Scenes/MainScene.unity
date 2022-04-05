@@ -1729,7 +1729,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemHolder: {fileID: 91826919}
   slotPrefab: {fileID: 5149672427954209835, guid: f3e7fe66b606b3a4da15c4e8fa753e63, type: 3}
-  limit: 5
+  limit: 4
   offset: 0
 --- !u!1001 &1130641701
 PrefabInstance:
@@ -2153,7 +2153,7 @@ GameObject:
   - component: {fileID: 1278334715}
   m_Layer: 5
   m_Name: Canvas
-  m_TagString: Untagged
+  m_TagString: Canvas
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

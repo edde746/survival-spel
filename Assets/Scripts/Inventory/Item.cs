@@ -39,7 +39,7 @@ public class Item : ScriptableObject
 }
 
 [System.Serializable]
-public struct ItemEntry
+public class ItemEntry
 {
     public ItemEntry(Item item, int count)
     {

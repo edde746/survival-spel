@@ -17,15 +17,21 @@ public class SlotsManager : MonoBehaviour
             Destroy(child.gameObject);
         }
 
-        var dataIter = data.Skip(offset);
-        if (limit > 0)
-            dataIter = dataIter.Take(limit);
-
-        foreach (var entry in dataIter)
+        var index = 0;
+        foreach (var entry in data)
         {
+            if (limit > 0 && index > offset + limit) return;
+            if (offset > 0 && index < offset)
+            {
+                index++;
+                continue;
+            }
+
             var newSlot = Instantiate(slotPrefab, transform, false);
             var slotScript = newSlot.GetComponent<Slot>();
             slotScript.UpdateSlot(entry);
+
+            index++;
         }
     }
 

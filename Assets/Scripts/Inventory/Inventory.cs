@@ -31,13 +31,18 @@ public class Inventory : MonoBehaviour, ItemHolder
     void Start()
     {
         items = new ItemEntry[4 * 5];
+        for (int i = 0; i < items.Length; i++)
+        {
+            items[i] = new ItemEntry(null, 0);
+        }
+
         itemAnchor = GameObject.FindGameObjectWithTag("ItemAnchor");
 
         // Give player test item
-        GiveItem(6, 14);
+        GiveItem(6, 2);
         //GiveItem(1, 1);
         //GiveItem(2, 1);
-        //GiveItem(5, 2);
+        GiveItem(4, 5000);
         SetActiveItem(0);
     }
 
@@ -74,7 +79,7 @@ public class Inventory : MonoBehaviour, ItemHolder
 
         // Update model in hands
         var activeItem = items[hotbarActiveItem];
-        if (activeItem.item != null && activeItem.item.model != null && !activeItem.item.flags.HasFlag(ItemFlags.DontShowInHand))
+        if (activeItem?.item != null && activeItem.item.model != null && !activeItem.item.flags.HasFlag(ItemFlags.DontShowInHand))
         {
             activeItemModel = Instantiate(activeItem.item.model, Vector3.zero, Quaternion.identity);
             activeItemModel.transform.SetParent(itemAnchor.transform);
@@ -137,7 +142,7 @@ public class Inventory : MonoBehaviour, ItemHolder
             for (int i = 0; i < items.Length; i++)
             {
                 ref var slot = ref items[i];
-                if (slot.item != null && slot.item.id == item.id && slot.count < item.stackable)
+                if (slot != null && slot.item != null && slot.item.id == item.id && slot.count < item.stackable)
                 {
                     // Check if the new total for the slot would be more than we can stack
                     if (slot.count + count > slot.item.stackable)
@@ -167,13 +172,15 @@ public class Inventory : MonoBehaviour, ItemHolder
                 if (count > item.stackable)
                 {
                     // If so, give the max count
-                    items[i] = new ItemEntry(item, item.stackable);
+                    items[i].item = item;
+                    items[i].count = item.stackable;
                     OnInventoryChange.Invoke(items);
                     // Then give the rest
                     return GiveItem(item.id, count - item.stackable);
                 }
 
-                items[i] = new ItemEntry(item, count);
+                items[i].item = item;
+                items[i].count = count;
                 OnInventoryChange.Invoke(items);
                 return true;
             }
