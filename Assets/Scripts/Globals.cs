@@ -33,9 +33,10 @@ public class Globals : MonoBehaviour
     }
 
     // Create notification and set data
-    public static void CreateNotification(string text, float duration = 3f, Sprite icon = null)
+    public static GameObject CreateNotification(string text, float duration = 3f, Sprite icon = null)
     {
         var notification = Instantiate(Instance.notificationPrefab, Instance.notificationsContainer.transform, false);
         notification.GetComponent<Notification>().SetData(icon, text, duration);
+        return notification;
     }
 }

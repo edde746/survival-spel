@@ -8,9 +8,10 @@ public class PlayerScript : MonoBehaviour
     Camera playerCamera;
     public float spawnRadius = 300f;
     bool itemBusy = false;
-    float health = 65f, hunger = 75f, thirst = 45f;
-    bool showPickableText = false;
+    float health = 65f, hunger = 5f, thirst = 45f;
+    public GameObject pickableText;
     public Vitalbar healthBar, hungerBar, thirstBar;
+    GameObject healthNotification, hungerNotification, thirstNotification;
 
     void Start()
     {
@@ -28,7 +29,6 @@ public class PlayerScript : MonoBehaviour
 
     void Update()
     {
-        showPickableText = false;
         hunger -= Time.deltaTime * 0.09f;
         thirst -= Time.deltaTime * 0.1f;
         healthBar.SetVital(health / 100f);
@@ -37,11 +37,30 @@ public class PlayerScript : MonoBehaviour
 
         // Starving
         if (hunger < 5f)
+        {
             health -= Time.deltaTime * 0.7f;
+            if (healthNotification == null)
+                healthNotification = Globals.CreateNotification("You are starving!", 0f);
+        }
+        else
+        {
+            if (healthNotification != null)
+                Destroy(healthNotification);
+        }
+
 
         // Dehydrated
         if (thirst < 7f)
+        {
             health -= Time.deltaTime * 0.6f;
+            if (thirstNotification == null)
+                thirstNotification = Globals.CreateNotification("You are dehydrated!", 0f);
+        }
+        else
+        {
+            if (thirstNotification != null)
+                Destroy(thirstNotification);
+        }
 
 
         // Check if busy or mouse not locked
@@ -55,7 +74,7 @@ public class PlayerScript : MonoBehaviour
             activeItem.Consume(1);
             StartCoroutine(BusyFor(1f));
         }
-
+        var showPickableText = false;
         RaycastHit hit;
         if (Physics.Raycast(playerCamera.transform.position, playerCamera.transform.forward, out hit, 5f, ~(1 << 2)))
         {
@@ -89,6 +108,8 @@ public class PlayerScript : MonoBehaviour
                 }
             }
         }
+
+        pickableText.SetActive(showPickableText);
     }
 
     IEnumerator BusyFor(float time)

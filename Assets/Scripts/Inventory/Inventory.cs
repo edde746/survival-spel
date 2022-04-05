@@ -40,7 +40,7 @@ public class Inventory : MonoBehaviour, ItemHolder
         GiveItem(6, 1);
         //GiveItem(1, 1);
         //GiveItem(2, 1);
-        GiveItem(4, 530);
+        //GiveItem(7, 10);
         SetActiveItem(0);
     }
 
