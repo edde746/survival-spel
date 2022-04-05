@@ -15,7 +15,7 @@ MonoBehaviour:
   id: 1
   flags: 68
   stackable: 1
-  icon: {fileID: 2800000, guid: f24d48ec14e96d74ca6c3a77ff20970d, type: 3}
+  icon: {fileID: 21300000, guid: f24d48ec14e96d74ca6c3a77ff20970d, type: 3}
   model: {fileID: 8844194927967444564, guid: 3ddd8b93a48324b7bb8e78206ea1cd8f, type: 3}
   stats:
   - name: damage

@@ -54,7 +54,7 @@ public class PlayerScript : MonoBehaviour
 
 
         // Interactivity
-        if (Inventory.Instance.showInventoryGUI || itemBusy) return;
+        if (itemBusy) return;
 
         ref var activeItem = ref Inventory.Instance.GetActiveItem();
         if (activeItem.item != null && activeItem.item.flags.HasFlag(ItemFlags.Food) && Input.GetButtonDown("Fire1"))
@@ -65,7 +65,7 @@ public class PlayerScript : MonoBehaviour
         }
 
         RaycastHit hit;
-        if (Physics.Raycast(playerCamera.transform.position, playerCamera.transform.forward, out hit, 5f, ~(1 << 2 | 1 << 6)))
+        if (Physics.Raycast(playerCamera.transform.position, playerCamera.transform.forward, out hit, 5f, ~(1 << 2)))
         {
             if (hit.transform.gameObject.CompareTag("Interactable"))
             {

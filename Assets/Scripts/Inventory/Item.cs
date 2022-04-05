@@ -26,7 +26,7 @@ public class Item : ScriptableObject
     public int id = -1;
     public ItemFlags flags;
     public int stackable = 1;
-    public Texture icon;
+    public Sprite icon;
     public GameObject model;
     [SerializeField]
     public List<Stat> stats;
