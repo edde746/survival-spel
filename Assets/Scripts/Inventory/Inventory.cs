@@ -4,13 +4,11 @@ using UnityEngine;
 
 public interface ItemHolder
 {
-    public Action<ItemEntry[]> OnInventoryChange { get; set; }
     public ItemEntry[] items { get; set; }
 }
 
 public class Inventory : MonoBehaviour, ItemHolder
 {
-    public Action<ItemEntry[]> OnInventoryChange { get; set; }
     public ItemEntry[] items { get; set; }
     public int hotbarActiveItem;
     GameObject itemAnchor;
@@ -61,7 +59,6 @@ public class Inventory : MonoBehaviour, ItemHolder
                 MouseLook.disableLook = true;
                 MouseLook.lockCursor = false;
                 Cursor.lockState = CursorLockMode.None;
-                OnInventoryChange.Invoke(items);
             }
             else
             {
@@ -109,7 +106,7 @@ public class Inventory : MonoBehaviour, ItemHolder
         for (int i = 0; i < items.Length; i++)
         {
             ref var slot = ref items[i];
-            if (slot.item.id != item.id) continue;
+            if (slot == null || slot.item?.id != item.id) continue;
 
             // Get the amount we can consume (we can't consume more than the count of the slot)
             var canConsume = Mathf.Min(leftToConsume, slot.count);
@@ -120,12 +117,11 @@ public class Inventory : MonoBehaviour, ItemHolder
 
             // Check if we have depleated the slot
             if (slot.count == 0) slot.item = null;
-            OnInventoryChange.Invoke(items);
+            slot.OnChange?.Invoke();
 
             // We have consumed the desired amount
             if (leftToConsume == 0) return;
         }
-
     }
 
     public bool GiveItem(int id, int count = 1)
@@ -146,19 +142,22 @@ public class Inventory : MonoBehaviour, ItemHolder
                 if (slot != null && slot.item != null && slot.item.id == item.id && slot.count < item.stackable)
                 {
                     // Check if the new total for the slot would be more than we can stack
-                    if (slot.count + count > slot.item.stackable)
+                    var newCount = slot.count + count;
+                    if (newCount > slot.item.stackable)
                     {
                         // Get the overflow amount
-                        var itemOverflow = (slot.count + count) - slot.item.stackable;
+                        var itemOverflow = newCount - slot.item.stackable;
                         // Set a full stack
                         slot.count = slot.item.stackable;
-                        OnInventoryChange.Invoke(items);
-                        // Give the rest
-                        return GiveItem(item, itemOverflow);
+                        // Give the overflow amount
+                        if (itemOverflow > 0)
+                            return GiveItem(item, itemOverflow);
+                        slot.OnChange?.Invoke();
+                        return true;
                     }
 
                     slot.count += count;
-                    OnInventoryChange.Invoke(items);
+                    slot.OnChange?.Invoke();
                     return true;
                 }
             }
@@ -167,22 +166,26 @@ public class Inventory : MonoBehaviour, ItemHolder
         // Put item in empty slot
         for (int i = 0; i < items.Length; i++)
         {
-            if (items[i].count == 0)
+            var slot = items[i];
+            if (slot.count == 0)
             {
                 // Check if we are giving more than stackable
                 if (count > item.stackable)
                 {
                     // If so, give the max count
-                    items[i].item = item;
-                    items[i].count = item.stackable;
-                    OnInventoryChange.Invoke(items);
+                    slot.item = item;
+                    slot.count = item.stackable;
+                    var overflow = count - item.stackable;
                     // Then give the rest
-                    return GiveItem(item.id, count - item.stackable);
+                    if (overflow > 0)
+                        return GiveItem(item, overflow);
+                    slot.OnChange?.Invoke();
+                    return true;
                 }
 
-                items[i].item = item;
-                items[i].count = count;
-                OnInventoryChange.Invoke(items);
+                slot.item = item;
+                slot.count = count;
+                slot.OnChange?.Invoke();
                 return true;
             }
         }

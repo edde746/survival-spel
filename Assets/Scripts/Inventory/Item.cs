@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using System.Collections.Generic;
 
@@ -47,6 +48,7 @@ public class ItemEntry
         this.count = count;
     }
 
+    public Action OnChange;
     public Item item;
     public int count;
 
@@ -59,7 +61,6 @@ public class ItemEntry
             count = 0;
         }
 
-        // 🍝
-        Inventory.Instance.OnInventoryChange.Invoke(Inventory.Instance.items);
+        OnChange?.Invoke();
     }
 }

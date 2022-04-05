@@ -9,16 +9,21 @@ public class SlotsManager : MonoBehaviour
     public GameObject slotPrefab;
     public int limit = 0, offset = 0;
 
-    void Draw(ItemEntry[] data)
+    void UpdateSlots()
     {
         if (!gameObject.activeSelf) return;
+    }
+
+    void Start()
+    {
         foreach (Transform child in transform)
         {
             Destroy(child.gameObject);
         }
 
         var index = 0;
-        foreach (var entry in data)
+        var items = itemHolder.GetComponent<ItemHolder>().items;
+        foreach (var entry in items)
         {
             if (limit > 0 && index > offset + limit) return;
             if (offset > 0 && index < offset)
@@ -33,10 +38,5 @@ public class SlotsManager : MonoBehaviour
 
             index++;
         }
-    }
-
-    void Awake()
-    {
-        itemHolder.GetComponent<ItemHolder>().OnInventoryChange += Draw;
     }
 }

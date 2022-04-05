@@ -16,9 +16,19 @@ public class Slot : MonoBehaviour, IDropHandler, IDragHandler, IBeginDragHandler
         count.gameObject.SetActive(status);
     }
 
+    public void UpdateSlot()
+    {
+        UpdateSlot(entry);
+    }
+
     public void UpdateSlot(ItemEntry entry)
     {
-        this.entry = entry;
+        if (entry != this.entry)
+        {
+            this.entry = entry;
+            entry.OnChange += UpdateSlot;
+        }
+
         if (entry.count <= 0 || entry.item == null)
         {
             SetSlotActive(false);
@@ -60,6 +70,9 @@ public class Slot : MonoBehaviour, IDropHandler, IDragHandler, IBeginDragHandler
                     else
                     {
                         entry.count = total;
+                        // Fully consume the source slot
+                        sourceSlot.entry.count = 0;
+                        sourceSlot.entry.item = null;
                     }
                 }
             }

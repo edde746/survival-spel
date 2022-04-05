@@ -8,7 +8,8 @@ public class Ingredient : MonoBehaviour
     public TextMeshProUGUI count;
     public void SetIngredient(Item item, int count)
     {
-        icon.sprite = item.icon;
+        if (icon && item != null)
+            icon.sprite = item.icon;
         this.count.text = count.ToString();
     }
 }

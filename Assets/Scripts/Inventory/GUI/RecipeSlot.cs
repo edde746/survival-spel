@@ -17,6 +17,6 @@ public class RecipeSlot : MonoBehaviour
 
     public void OnClick()
     {
-        SelectedRecipeLoader.Instance.LoadRecipe(recipe);
+        SelectedRecipe.Instance.LoadRecipe(recipe);
     }
 }

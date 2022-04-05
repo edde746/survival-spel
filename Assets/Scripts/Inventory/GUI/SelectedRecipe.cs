@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public class SelectedRecipeLoader : MonoBehaviour
+public class SelectedRecipe : MonoBehaviour
 {
     public GameObject ingredientPrefab;
     public Transform ingredientContainer;
@@ -11,7 +11,7 @@ public class SelectedRecipeLoader : MonoBehaviour
     [HideInInspector]
     public Recipe recipe;
 
-    public static SelectedRecipeLoader Instance { get; private set; }
+    public static SelectedRecipe Instance { get; private set; }
 
     void Awake()
     {
