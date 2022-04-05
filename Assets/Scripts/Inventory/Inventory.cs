@@ -39,10 +39,10 @@ public class Inventory : MonoBehaviour, ItemHolder
         itemAnchor = GameObject.FindGameObjectWithTag("ItemAnchor");
 
         // Give player test item
-        GiveItem(6, 2);
+        GiveItem(6, 1);
         //GiveItem(1, 1);
         //GiveItem(2, 1);
-        GiveItem(4, 5000);
+        GiveItem(4, 530);
         SetActiveItem(0);
     }
 
@@ -71,9 +71,10 @@ public class Inventory : MonoBehaviour, ItemHolder
         }
     }
 
-    void SetActiveItem(int hotbarIndex)
+    public void SetActiveItem(int hotbarIndex = -1)
     {
-        hotbarActiveItem = Mathf.Clamp(hotbarIndex, 0, 4);
+        if (hotbarIndex != -1)
+            hotbarActiveItem = Mathf.Clamp(hotbarIndex, 0, 4);
 
         Destroy(activeItemModel);
 

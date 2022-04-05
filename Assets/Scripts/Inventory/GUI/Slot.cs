@@ -19,19 +19,18 @@ public class Slot : MonoBehaviour, IDropHandler, IDragHandler, IBeginDragHandler
     public void UpdateSlot(ItemEntry entry)
     {
         this.entry = entry;
-        if (entry == null || entry.count <= 0 || entry.item == null)
+        if (entry.count <= 0 || entry.item == null)
         {
             SetSlotActive(false);
             return;
         }
 
         SetSlotActive(true);
+        count.text = "";
         if (entry.item.icon == null) return;
         icon.sprite = entry.item.icon;
         if (entry.count > 1)
             count.text = entry.count.ToString();
-        else
-            count.text = "";
     }
 
     void Awake()
@@ -41,13 +40,30 @@ public class Slot : MonoBehaviour, IDropHandler, IDragHandler, IBeginDragHandler
 
     public void OnDrop(PointerEventData data)
     {
-        if (data.pointerDrag != null)
+        if (data.pointerDrag != null && data.pointerDrag != gameObject)
         {
             var sourceSlot = data.pointerDrag.GetComponent<Slot>();
             if (!sourceSlot) return;
 
             // Swap contents of item entries
-            // TODO: Stacking
+
+            if (sourceSlot.entry.item?.id == entry.item?.id)
+            {
+                if (entry.item.stackable > 0)
+                {
+                    var total = entry.count + sourceSlot.entry.count;
+                    if (total > entry.item.stackable)
+                    {
+                        entry.count = entry.item.stackable;
+                        sourceSlot.entry.count = total - entry.item.stackable;
+                    }
+                    else
+                    {
+                        entry.count = total;
+                    }
+                }
+            }
+
             var itemCopy = entry.item;
             var countCopy = entry.count;
 
@@ -59,7 +75,7 @@ public class Slot : MonoBehaviour, IDropHandler, IDragHandler, IBeginDragHandler
 
             // Visual update
             UpdateSlot(entry);
-            sourceSlot.UpdateSlot(sourceSlot.entry);
+            Inventory.Instance.SetActiveItem();
         }
     }
 
@@ -71,7 +87,9 @@ public class Slot : MonoBehaviour, IDropHandler, IDragHandler, IBeginDragHandler
     public void OnBeginDrag(PointerEventData eventData)
     {
         icon.transform.SetParent(GameObject.FindGameObjectWithTag("Canvas").transform);
+        icon.transform.localScale = Vector3.one * 1.1f;
         icon.transform.SetAsLastSibling();
+        count.gameObject.SetActive(false);
     }
 
     public void OnEndDrag(PointerEventData eventData)
@@ -79,5 +97,7 @@ public class Slot : MonoBehaviour, IDropHandler, IDragHandler, IBeginDragHandler
         // Reset item
         icon.transform.SetParent(transform);
         icon.transform.localPosition = Vector3.zero;
+        icon.transform.localScale = Vector3.one;
+        UpdateSlot(entry);
     }
 }
