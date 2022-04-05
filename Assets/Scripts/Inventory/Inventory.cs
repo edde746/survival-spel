@@ -14,6 +14,7 @@ public class Inventory : MonoBehaviour, ItemHolder
     public ItemEntry[] items { get; set; }
     public int hotbarActiveItem;
     GameObject itemAnchor;
+    public GameObject inventoryUI;
     [HideInInspector]
     public GameObject activeItemModel;
     public static Inventory Instance { get; private set; }
@@ -24,16 +25,16 @@ public class Inventory : MonoBehaviour, ItemHolder
             return;
 
         Instance = this;
+        inventoryUI.SetActive(false);
     }
 
     void Start()
     {
         items = new ItemEntry[4 * 5];
-
         itemAnchor = GameObject.FindGameObjectWithTag("ItemAnchor");
 
         // Give player test item
-        GiveItem(6, 1);
+        GiveItem(6, 14);
         //GiveItem(1, 1);
         //GiveItem(2, 1);
         //GiveItem(5, 2);
@@ -49,19 +50,19 @@ public class Inventory : MonoBehaviour, ItemHolder
         // Handle opening & closing of inventory
         if (Input.GetKeyDown(KeyCode.Tab))
         {
-            /*showInventoryGUI = !showInventoryGUI;
-            if (showInventoryGUI)
+            inventoryUI.SetActive(!inventoryUI.activeSelf);
+            if (inventoryUI.activeSelf)
             {
                 MouseLook.disableLook = true;
                 MouseLook.lockCursor = false;
                 Cursor.lockState = CursorLockMode.None;
+                OnInventoryChange.Invoke(items);
             }
             else
             {
                 MouseLook.disableLook = false;
                 MouseLook.lockCursor = true;
-                Crafting.Instance.showCraftingGUI = false;
-            }*/
+            }
         }
     }
 

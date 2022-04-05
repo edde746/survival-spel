@@ -26,7 +26,10 @@ public class Slot : MonoBehaviour
         SetSlotActive(true);
         if (entry.item.icon == null) return;
         icon.sprite = entry.item.icon;
-        count.text = entry.count.ToString();
+        if (entry.count > 1)
+            count.text = entry.count.ToString();
+        else
+            count.text = "";
     }
 
     void Awake()

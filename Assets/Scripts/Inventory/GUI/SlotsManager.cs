@@ -11,6 +11,7 @@ public class SlotsManager : MonoBehaviour
 
     void Draw(ItemEntry[] data)
     {
+        if (!gameObject.activeSelf) return;
         foreach (Transform child in transform)
         {
             Destroy(child.gameObject);
