@@ -15,6 +15,7 @@ public class Inventory : MonoBehaviour, ItemHolder
     public GameObject inventoryUI;
     [HideInInspector]
     public GameObject activeItemModel;
+    public AudioClip openSound;
     public static Inventory Instance { get; private set; }
 
     void Awake()
@@ -40,9 +41,17 @@ public class Inventory : MonoBehaviour, ItemHolder
         GiveItem(6, 1);
         //GiveItem(1, 1);
         //GiveItem(2, 1);
-        //GiveItem(7, 10);
+        GiveItem(7, 10);
         SetActiveItem(0);
     }
+
+    KeyCode[] NumberKeys = {
+        KeyCode.Alpha1,
+        KeyCode.Alpha2,
+        KeyCode.Alpha3,
+        KeyCode.Alpha4,
+        KeyCode.Alpha5,
+    };
 
     void Update()
     {
@@ -54,6 +63,8 @@ public class Inventory : MonoBehaviour, ItemHolder
         if (Input.GetKeyDown(KeyCode.Tab))
         {
             inventoryUI.SetActive(!inventoryUI.activeSelf);
+            AudioSource.PlayClipAtPoint(openSound, transform.position);
+
             if (inventoryUI.activeSelf)
             {
                 MouseLook.disableLook = true;
@@ -64,6 +75,30 @@ public class Inventory : MonoBehaviour, ItemHolder
             {
                 MouseLook.disableLook = false;
                 MouseLook.lockCursor = true;
+            }
+        }
+
+        for (int i = 0; i < NumberKeys.Length; i++)
+        {
+            if (Input.GetKeyDown(NumberKeys[i]))
+            {
+                // Consume item if it's food
+                if (items[i].item != null && items[i].item.flags.HasFlag(ItemFlags.Food))
+                {
+                    // Don't eat when full
+                    if (PlayerScript.Instance.hunger < 98f)
+                    {
+                        var targetHunger = Mathf.Clamp(PlayerScript.Instance.hunger + items[i].item.GetStat("hunger"), 0f, 100f);
+                        PlayerScript.Instance.hunger = targetHunger;
+                        items[i].Consume(1);
+                        // Play sound
+                        Globals.PlayEatSound(transform.position);
+                    }
+                }
+                else
+                {
+                    SetActiveItem(i);
+                }
             }
         }
     }

@@ -117,3 +117,10 @@ MonoBehaviour:
   toolType: 2
   itemAmount: 67
   item: 4
+  hitSounds:
+  - {fileID: 8300000, guid: d249534cf16644e12a0dc9f4a183658f, type: 3}
+  - {fileID: 8300000, guid: bed60cf80a85740d582218d7a8ab25f6, type: 3}
+  - {fileID: 8300000, guid: e5cc4f5b5e25e4f6697f2ccd323b7a9b, type: 3}
+  - {fileID: 8300000, guid: c0daf0869335e4ca3bd76f6051ca5992, type: 3}
+  - {fileID: 8300000, guid: 703de37b3a72d4e55b82883df119c3ae, type: 3}
+  dieSounds: []

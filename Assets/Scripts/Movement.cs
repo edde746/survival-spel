@@ -8,6 +8,14 @@ public class Movement : MonoBehaviour
 
     bool onGround = false;
 
+    public bool isOnGround
+    {
+        get
+        {
+            return onGround;
+        }
+    }
+
     void Start()
     {
         controller = GetComponent<CharacterController>();

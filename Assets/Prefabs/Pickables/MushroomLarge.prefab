@@ -115,6 +115,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   item: 7
   itemAmount: 1
+  pickSounds:
+  - {fileID: 8300000, guid: 2a6ab4115b8b944b9b0bf0fd776cb974, type: 3}
 --- !u!135 &2636150049528034008
 SphereCollider:
   m_ObjectHideFlags: 0

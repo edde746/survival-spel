@@ -7,6 +7,8 @@ public class Globals : MonoBehaviour
     public GameObject rockDestroyParticle;
     public GameObject notificationsContainer;
     public GameObject notificationPrefab;
+    public List<AudioClip> eatSounds;
+    public AudioClip craftSound;
 
     public static Texture2D SolidColorTexture(Color color)
     {
@@ -14,6 +16,23 @@ public class Globals : MonoBehaviour
         texture.SetPixel(0, 0, color);
         texture.Apply();
         return texture;
+    }
+
+    public static void PlayEatSound(Vector3 position)
+    {
+        if (Instance.eatSounds.Count > 0)
+        {
+            var clip = Instance.eatSounds[Random.Range(0, Instance.eatSounds.Count)];
+            AudioSource.PlayClipAtPoint(clip, position);
+        }
+    }
+
+    public static void PlayCraftSound(Vector3 position)
+    {
+        if (Instance.craftSound != null)
+        {
+            AudioSource.PlayClipAtPoint(Instance.craftSound, position);
+        }
     }
 
     public static Globals Instance { get; private set; }

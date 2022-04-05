@@ -301,24 +301,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 6696733777694383782, guid: a4bafdbbcd584408d9fc4a5153277fcb, type: 3}
   m_PrefabInstance: {fileID: 6696733777641370689}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &91826926
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 91826919}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b081a72f0b1c84b9293c958bb44dd8c4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  spawnPoint: {x: 500, y: 0, z: 500}
-  spawnRadius: 300
-  pickableText: {fileID: 281284926}
-  healthBar: {fileID: 250770879}
-  hungerBar: {fileID: 1062545506}
-  thirstBar: {fileID: 1463310061}
 --- !u!1 &101986930
 GameObject:
   m_ObjectHideFlags: 0
@@ -1991,6 +1973,15 @@ MonoBehaviour:
   rockDestroyParticle: {fileID: 5616137814035081872, guid: 1c1ca99a159654b72877466d8c571f34, type: 3}
   notificationsContainer: {fileID: 2127008020}
   notificationPrefab: {fileID: 289618032296325178, guid: f48d3210c7d4f45aab75126c82e63a53, type: 3}
+  eatSounds:
+  - {fileID: 8300000, guid: f79793a9209b547d1ad3ef545ef77c17, type: 3}
+  - {fileID: 8300000, guid: 6a235435842634fe49edafd1286d27db, type: 3}
+  - {fileID: 8300000, guid: 00c18c2080f81403d8fcfa97e05e5490, type: 3}
+  - {fileID: 8300000, guid: 2103f880943d64493bc3c4916536c0f4, type: 3}
+  - {fileID: 8300000, guid: 6a08978083dba4de8ae276762db0a1d7, type: 3}
+  - {fileID: 8300000, guid: 93a1789f19c1c44c384ca8dd6587b4bc, type: 3}
+  - {fileID: 8300000, guid: 6bdb4f61502c949469d039510f94e6b2, type: 3}
+  craftSound: {fileID: 8300000, guid: 84424c4bf668b40558358928a5ef40d7, type: 3}
 --- !u!114 &594705687
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6341,6 +6332,22 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 163890155700980592, guid: a4bafdbbcd584408d9fc4a5153277fcb, type: 3}
+      propertyPath: healthBar
+      value: 
+      objectReference: {fileID: 250770879}
+    - target: {fileID: 163890155700980592, guid: a4bafdbbcd584408d9fc4a5153277fcb, type: 3}
+      propertyPath: hungerBar
+      value: 
+      objectReference: {fileID: 1062545506}
+    - target: {fileID: 163890155700980592, guid: a4bafdbbcd584408d9fc4a5153277fcb, type: 3}
+      propertyPath: thirstBar
+      value: 
+      objectReference: {fileID: 1463310061}
+    - target: {fileID: 163890155700980592, guid: a4bafdbbcd584408d9fc4a5153277fcb, type: 3}
+      propertyPath: pickableText
+      value: 
+      objectReference: {fileID: 281284926}
     - target: {fileID: 5151914082073121828, guid: a4bafdbbcd584408d9fc4a5153277fcb, type: 3}
       propertyPath: inventoryUI
       value: 

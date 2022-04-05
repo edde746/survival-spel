@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 // Handle player specific behaviour
@@ -8,10 +9,26 @@ public class PlayerScript : MonoBehaviour
     Camera playerCamera;
     public float spawnRadius = 300f;
     bool itemBusy = false;
-    float health = 65f, hunger = 5f, thirst = 45f;
+    [HideInInspector]
+    public float health = 100f, hunger = 100f, thirst = 100f;
     public GameObject pickableText;
     public Vitalbar healthBar, hungerBar, thirstBar;
     GameObject healthNotification, hungerNotification, thirstNotification;
+    AudioSource footstepSource;
+    public List<AudioClip> footstepSounds;
+    CharacterController controller;
+    float timeSinceLastFootstep = 0f;
+    Movement movement;
+
+    public static PlayerScript Instance { get; private set; }
+
+    void Awake()
+    {
+        if (Instance != null)
+            return;
+
+        Instance = this;
+    }
 
     void Start()
     {
@@ -23,8 +40,16 @@ public class PlayerScript : MonoBehaviour
 
         transform.position = point;
 
-        // Get camera
+        // Get components
         playerCamera = GetComponentInChildren<Camera>();
+        footstepSource = GetComponentInChildren<AudioSource>();
+        controller = GetComponent<CharacterController>();
+        movement = GetComponent<Movement>();
+
+        // Generate random vitals to start
+        health = Random.Range(50f, 90f);
+        hunger = Random.Range(45f, 80f);
+        thirst = Random.Range(40f, 80f);
     }
 
     void Update()
@@ -70,10 +95,15 @@ public class PlayerScript : MonoBehaviour
         ref var activeItem = ref Inventory.Instance.GetActiveItem();
         if (activeItem != null && activeItem.item != null && activeItem.item.flags.HasFlag(ItemFlags.Food) && Input.GetButtonDown("Fire1"))
         {
-            hunger += activeItem.item.GetStat("hunger");
-            activeItem.Consume(1);
-            StartCoroutine(BusyFor(1f));
+            if (hunger < 98f)
+            {
+                hunger = Mathf.Clamp(hunger + activeItem.item.GetStat("hunger"), 0f, 100f);
+                activeItem.Consume(1);
+                Globals.PlayEatSound(transform.position);
+                StartCoroutine(BusyFor(1f));
+            }
         }
+
         var showPickableText = false;
         RaycastHit hit;
         if (Physics.Raycast(playerCamera.transform.position, playerCamera.transform.forward, out hit, 5f, ~(1 << 2)))
@@ -110,6 +140,24 @@ public class PlayerScript : MonoBehaviour
         }
 
         pickableText.SetActive(showPickableText);
+
+        // Play footsteps if player is moving
+        if (Mathf.Abs(controller.velocity.magnitude) > 0f && movement.isOnGround)
+        {
+            if (timeSinceLastFootstep > 0.3f)
+            {
+                // Play random footstep sound
+                footstepSource.clip = footstepSounds[Random.Range(0, footstepSounds.Count)];
+                footstepSource.Play();
+                timeSinceLastFootstep = 0f;
+            }
+            timeSinceLastFootstep += Time.deltaTime;
+        }
+        else
+        {
+            if (footstepSource.isPlaying)
+                footstepSource.Stop();
+        }
     }
 
     IEnumerator BusyFor(float time)
