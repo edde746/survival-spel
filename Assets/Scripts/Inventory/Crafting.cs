@@ -31,5 +31,6 @@ public class Crafting : MonoBehaviour
         }
 
         Inventory.Instance.GiveItem(recipe.output, 1);
+        Globals.CreateNotification("Crafted " + recipe.output.name, 5f, recipe.output.icon);
     }
 }

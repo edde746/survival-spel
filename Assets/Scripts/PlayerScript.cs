@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 // Handle player specific behaviour
@@ -10,8 +9,8 @@ public class PlayerScript : MonoBehaviour
     public float spawnRadius = 300f;
     bool itemBusy = false;
     float health = 65f, hunger = 75f, thirst = 45f;
-    GUIStyle healthStyle, hungerStyle, thirstStyle, emptyStyle, alertStyle;
     bool showPickableText = false;
+    public Vitalbar healthBar, hungerBar, thirstBar;
 
     void Start()
     {
@@ -25,17 +24,6 @@ public class PlayerScript : MonoBehaviour
 
         // Get camera
         playerCamera = GetComponentInChildren<Camera>();
-
-        GUIStyle CreateStyle(Color color)
-        {
-            return new GUIStyle { normal = new GUIStyleState { background = Globals.SolidColorTexture(color) } };
-        }
-
-        alertStyle = CreateStyle(Color.Lerp(Color.red, Color.black, 0.2f));
-        healthStyle = CreateStyle(Color.Lerp(Color.red, Color.white, 0.3f));
-        hungerStyle = CreateStyle(Color.Lerp(Color.green, Color.white, 0.5f));
-        thirstStyle = CreateStyle(Color.Lerp(Color.blue, Color.white, 0.5f));
-        emptyStyle = CreateStyle(new Color(0.5f, 0.5f, 0.5f, 0.5f));
     }
 
     void Update()
@@ -43,6 +31,9 @@ public class PlayerScript : MonoBehaviour
         showPickableText = false;
         hunger -= Time.deltaTime * 0.09f;
         thirst -= Time.deltaTime * 0.1f;
+        healthBar.SetVital(health / 100f);
+        hungerBar.SetVital(hunger / 100f);
+        thirstBar.SetVital(thirst / 100f);
 
         // Starving
         if (hunger < 5f)
@@ -53,8 +44,9 @@ public class PlayerScript : MonoBehaviour
             health -= Time.deltaTime * 0.6f;
 
 
-        // Interactivity
-        if (itemBusy) return;
+        // Check if busy or mouse not locked
+        if (itemBusy || !Cursor.lockState.Equals(CursorLockMode.Locked))
+            return;
 
         ref var activeItem = ref Inventory.Instance.GetActiveItem();
         if (activeItem != null && activeItem.item != null && activeItem.item.flags.HasFlag(ItemFlags.Food) && Input.GetButtonDown("Fire1"))
@@ -131,48 +123,5 @@ public class PlayerScript : MonoBehaviour
         // TODO: Sound FX & PTFX
         yield return new WaitForSeconds(.5f);
         itemBusy = false;
-    }
-
-    Vector2 vitalsBarSize = new Vector2(150f, 17.5f);
-    void DrawBar(float progress, GUIStyle filled, ref float drawY)
-    {
-        var barPosition = new Vector2(10f, drawY);
-        GUI.Box(new Rect(barPosition, vitalsBarSize), GUIContent.none, emptyStyle);
-        GUI.Box(new Rect(barPosition, new Vector2(vitalsBarSize.x * progress, vitalsBarSize.y)), GUIContent.none, filled);
-        drawY -= vitalsBarSize.y + 5f;
-    }
-
-    GUIStyle textStyle, textCenterStyle;
-    void DrawBar(string text, GUIStyle style, ref float drawY)
-    {
-        if (textStyle == null)
-            textStyle = new GUIStyle { alignment = TextAnchor.MiddleLeft, normal = new GUIStyleState { textColor = Color.white } };
-
-        GUI.Box(new Rect(new Vector2(10f, drawY), vitalsBarSize), GUIContent.none, style);
-        GUI.Label(new Rect(new Vector2(15f, drawY + 5f), vitalsBarSize - new Vector2(5f, 10f)), text, textStyle);
-        drawY -= vitalsBarSize.y + 5f;
-    }
-
-    void OnGUI()
-    {
-        if (textCenterStyle == null)
-            textCenterStyle = new GUIStyle { alignment = TextAnchor.MiddleCenter, normal = new GUIStyleState { textColor = Color.white } };
-
-        var drawY = Screen.height - (vitalsBarSize.y + 5f);
-
-        DrawBar(thirst / 100f, thirstStyle, ref drawY);
-        DrawBar(hunger / 100f, hungerStyle, ref drawY);
-        DrawBar(health / 100f, healthStyle, ref drawY);
-
-        // Display to the user that they are starving
-        if (hunger < 5f)
-            DrawBar("Starving", alertStyle, ref drawY);
-
-        // Display to the user that they are dehydrated
-        if (thirst < 7f)
-            DrawBar("Dehydrated", alertStyle, ref drawY);
-
-        if (showPickableText)
-            GUI.Label(new Rect(Screen.width / 2f - 100f, Screen.height / 2f - 10f, 200f, 20f), "Press [E] to pick", textCenterStyle);
     }
 }
