@@ -13,7 +13,7 @@ public class TileGenerator : MonoBehaviour
         {
             for (int x = 0; x < width; x++)
             {
-                Instantiate(tile, new Vector3(generator.width * x, 0f, generator.height * z), Quaternion.identity);
+                Instantiate(tile, new Vector3(generator.size * x, 0f, generator.size * z), Quaternion.identity);
             }
         }
     }

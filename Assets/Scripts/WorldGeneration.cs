@@ -14,6 +14,7 @@ public class WorldGeneration : MonoBehaviour
     public List<Layer> layers;
     public static float size = 1000f;
     public float peaks = 100f;
+    public AnimationCurve heightCurve;
 
     public static Vector3 centerPoint;
     public Gradient heightColors;

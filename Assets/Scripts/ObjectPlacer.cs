@@ -21,7 +21,7 @@ public class ObjectPlacer : MonoBehaviour
         {
             point.y = hit.point.y + yOffset;
             // Check if we are below water level
-            if (point.y < 12.5f) return RandomSpot(center, range, findFloor);
+            if (point.y < 26.5f) return RandomSpot(center, range, findFloor);
             return (point, hit.normal);
         }
 
