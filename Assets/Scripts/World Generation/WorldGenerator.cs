@@ -42,6 +42,8 @@ public class WorldGenerator : MonoBehaviour
         var falloffMap = GenerateFalloffMap(width + 1, height + 1);
         var noiseMap = Noise.GenerateNoiseMap(width + 1, height + 1, seed, scale, octaves, persistance, lacunarity, offset);
 
+        Debug.Log("Generated maps");
+
         // Instantiate tiles and apply meshes
         for (int y = 0; y < height; y += tileSize)
         {
@@ -98,6 +100,8 @@ public class WorldGenerator : MonoBehaviour
                 mesh.RecalculateBounds();
             }
         }
+
+        Debug.Log("Generated tiles");
     }
 
 }

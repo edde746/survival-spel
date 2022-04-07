@@ -76,5 +76,7 @@ public class ObjectPlacer : MonoBehaviour
                     newObject.transform.rotation = Quaternion.FromToRotation(transform.up, spot.normal) * newObject.transform.rotation;
             }
         }
+
+        Debug.Log(gameObject.name);
     }
 }
