@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 5588665986487648580}
   - component: {fileID: 5588665986487648579}
   - component: {fileID: 5588665986487648582}
-  - component: {fileID: 5588665986487648578}
   m_Layer: 6
   m_Name: Tile
   m_TagString: Ground
@@ -63,7 +62,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 40b2f08842d244c8a98d7cd57a0352a2, type: 2}
+  - {fileID: 2100000, guid: b9a6244712a504a77a3bd99b544c4743, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -99,17 +98,3 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 0}
---- !u!114 &5588665986487648578
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5588665986487648577}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 28dadad43b1a3754ea7b2da9d0a34d7d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  width: 250
-  height: 250

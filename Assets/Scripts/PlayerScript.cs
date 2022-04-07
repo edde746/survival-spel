@@ -35,8 +35,11 @@ public class PlayerScript : MonoBehaviour
         // Set spawnpoint
         var point = new Vector3(spawnPoint.x + Random.Range(spawnRadius / -2f, spawnRadius / 2f), 200f, spawnPoint.z + Random.Range(spawnRadius / -2f, spawnRadius / 2f));
         RaycastHit hit;
-        if (Physics.Raycast(point, Vector3.down, out hit, Mathf.Infinity, Physics.AllLayers))
-            point.y = hit.point.y + 3f;
+        do
+        {
+            if (Physics.Raycast(point, Vector3.down, out hit, Mathf.Infinity, Physics.AllLayers))
+                point.y = hit.point.y + 3f;
+        } while (point.y < 20.5f);
 
         transform.position = point;
 
@@ -86,7 +89,6 @@ public class PlayerScript : MonoBehaviour
             if (thirstNotification != null)
                 Destroy(thirstNotification);
         }
-
 
         // Check if busy or mouse not locked
         if (itemBusy || !Cursor.lockState.Equals(CursorLockMode.Locked))
