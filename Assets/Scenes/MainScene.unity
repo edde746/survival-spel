@@ -2303,7 +2303,7 @@ MonoBehaviour:
   height: 1200
   tileSize: 100
   heightScale: 40
-  seed: 64
+  seed: 109
   scale: 100
   octaves: 5
   persistance: 0.5
@@ -2482,7 +2482,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2894698916591434107, guid: dc9bedbb650f5f9409c2161ad5f872f1, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 20
+      value: 14.6
       objectReference: {fileID: 0}
     - target: {fileID: 2894698916591434107, guid: dc9bedbb650f5f9409c2161ad5f872f1, type: 3}
       propertyPath: m_LocalPosition.z

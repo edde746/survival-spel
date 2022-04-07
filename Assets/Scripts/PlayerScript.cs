@@ -34,12 +34,13 @@ public class PlayerScript : MonoBehaviour
     {
         // Set spawnpoint
         var point = new Vector3(spawnPoint.x + Random.Range(spawnRadius / -2f, spawnRadius / 2f), 200f, spawnPoint.z + Random.Range(spawnRadius / -2f, spawnRadius / 2f));
-        RaycastHit hit;
+
         do
         {
+            RaycastHit hit;
             if (Physics.Raycast(point, Vector3.down, out hit, Mathf.Infinity, Physics.AllLayers))
                 point.y = hit.point.y + 3f;
-        } while (point.y < 20.5f);
+        } while (point.y < 14.6f);
 
         transform.position = point;
 

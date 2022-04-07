@@ -57,7 +57,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Gradient:
-        m_Texture: {fileID: 2800000, guid: d6a81472aff0847fc8dd4b917b9a78f2, type: 3}
+        m_Texture: {fileID: 2800000, guid: 8e8e42757d1ab4d4481c32b6b0ff436d, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
@@ -115,7 +115,7 @@ Material:
     - _Metallic: 0
     - _OcclusionStrength: 1
     - _Parallax: 0.005
-    - _Peak: 4700
+    - _Peak: 3446
     - _QueueControl: 0
     - _QueueOffset: 0
     - _ReceiveShadows: 1
