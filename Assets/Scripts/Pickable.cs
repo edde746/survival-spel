@@ -19,4 +19,9 @@ public class Pickable : MonoBehaviour
         }
         Destroy(gameObject);
     }
+
+    public string GetPickupText()
+    {
+        return "[E] Pick up " + ItemDatabase.GetItem(item).name + " (" + itemAmount + ")";
+    }
 }

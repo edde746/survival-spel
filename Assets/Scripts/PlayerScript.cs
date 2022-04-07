@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 // Handle player specific behaviour
 public class PlayerScript : MonoBehaviour
@@ -35,12 +36,9 @@ public class PlayerScript : MonoBehaviour
         // Set spawnpoint
         var point = new Vector3(spawnPoint.x + Random.Range(spawnRadius / -2f, spawnRadius / 2f), 200f, spawnPoint.z + Random.Range(spawnRadius / -2f, spawnRadius / 2f));
 
-        do
-        {
-            RaycastHit hit;
-            if (Physics.Raycast(point, Vector3.down, out hit, Mathf.Infinity, Physics.AllLayers))
-                point.y = hit.point.y + 3f;
-        } while (point.y < 14.6f);
+        RaycastHit hit;
+        if (Physics.Raycast(point, Vector3.down, out hit, Mathf.Infinity, Physics.AllLayers))
+            point.y = hit.point.y + 3f;
 
         transform.position = point;
 
@@ -116,6 +114,8 @@ public class PlayerScript : MonoBehaviour
                 var pickable = hit.transform.GetComponent<Pickable>();
                 if (pickable != null)
                 {
+                    if (!showPickableText)
+                        pickableText.GetComponent<TextMeshProUGUI>().text = pickable.GetPickupText();
                     showPickableText = true;
                     if (Input.GetKeyDown(KeyCode.E))
                         pickable.Pick();

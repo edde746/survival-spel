@@ -7,6 +7,7 @@ public class Globals : MonoBehaviour
     public GameObject rockDestroyParticle;
     public GameObject notificationsContainer;
     public GameObject notificationPrefab;
+    public GameObject itemBagPrefab;
     public List<AudioClip> eatSounds;
     public AudioClip craftSound;
 

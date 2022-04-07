@@ -2037,6 +2037,7 @@ MonoBehaviour:
   rockDestroyParticle: {fileID: 5616137814035081872, guid: 1c1ca99a159654b72877466d8c571f34, type: 3}
   notificationsContainer: {fileID: 2127008020}
   notificationPrefab: {fileID: 289618032296325178, guid: f48d3210c7d4f45aab75126c82e63a53, type: 3}
+  itemBagPrefab: {fileID: 2471641572370879408, guid: 0c5407beeb019474eb9a8f92c5e6c56f, type: 3}
   eatSounds:
   - {fileID: 8300000, guid: f79793a9209b547d1ad3ef545ef77c17, type: 3}
   - {fileID: 8300000, guid: 6a235435842634fe49edafd1286d27db, type: 3}
@@ -2478,7 +2479,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2894698916591434107, guid: dc9bedbb650f5f9409c2161ad5f872f1, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: 400
       objectReference: {fileID: 0}
     - target: {fileID: 2894698916591434107, guid: dc9bedbb650f5f9409c2161ad5f872f1, type: 3}
       propertyPath: m_LocalPosition.y
@@ -2486,7 +2487,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2894698916591434107, guid: dc9bedbb650f5f9409c2161ad5f872f1, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: 600
       objectReference: {fileID: 0}
     - target: {fileID: 2894698916591434107, guid: dc9bedbb650f5f9409c2161ad5f872f1, type: 3}
       propertyPath: m_LocalRotation.w

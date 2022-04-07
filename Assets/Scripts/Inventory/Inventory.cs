@@ -184,10 +184,10 @@ public class Inventory : MonoBehaviour, ItemHolder
                         var itemOverflow = newCount - slot.item.stackable;
                         // Set a full stack
                         slot.count = slot.item.stackable;
+                        slot.OnChange?.Invoke();
                         // Give the overflow amount
                         if (itemOverflow > 0)
                             return GiveItem(item, itemOverflow);
-                        slot.OnChange?.Invoke();
                         return true;
                     }
 

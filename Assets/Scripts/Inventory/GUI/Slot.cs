@@ -56,7 +56,6 @@ public class Slot : MonoBehaviour, IDropHandler, IDragHandler, IBeginDragHandler
             if (!sourceSlot) return;
 
             // Swap contents of item entries
-
             if (sourceSlot.entry.item?.id == entry.item?.id)
             {
                 if (entry.item.stackable > 0)
@@ -73,6 +72,7 @@ public class Slot : MonoBehaviour, IDropHandler, IDragHandler, IBeginDragHandler
                         // Fully consume the source slot
                         sourceSlot.entry.count = 0;
                         sourceSlot.entry.item = null;
+                        return;
                     }
                 }
             }
@@ -112,5 +112,30 @@ public class Slot : MonoBehaviour, IDropHandler, IDragHandler, IBeginDragHandler
         icon.transform.localPosition = Vector3.zero;
         icon.transform.localScale = Vector3.one;
         UpdateSlot(entry);
+
+        // Handle item drop logic
+        if (eventData.pointerEnter != null)
+        {
+            var slot = eventData.pointerEnter.GetComponent<Slot>();
+            if (slot) return;
+        }
+
+        Debug.Log("Should physically drop item here");
+        // Spawn Item Bag with the contents of the slot
+        var position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        var itemBag = Instantiate(Globals.Instance.itemBagPrefab, position, Quaternion.identity);
+        // Set properties of bag to match the slot
+        var pickable = itemBag.GetComponent<Pickable>();
+        pickable.item = entry.item.id;
+        pickable.itemAmount = entry.count;
+        // Destroy slot contents
+        entry.item = null;
+        entry.count = 0;
+        UpdateSlot(entry);
+        Inventory.Instance.SetActiveItem();
+        // Apply throwing force away from camera to itemBag
+        var direction = Camera.main.transform.forward;
+        direction.Normalize();
+        itemBag.GetComponent<Rigidbody>().AddForce(direction * 5f, ForceMode.Impulse);
     }
 }
