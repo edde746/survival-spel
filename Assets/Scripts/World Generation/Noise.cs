@@ -6,9 +6,9 @@ public static class Noise
 {
 
     // Generate perlin noise map with octaves
-    public static float[,] GenerateNoiseMap(int mapWidth, int mapHeight, int seed, float scale, int octaves, float persistance, float lacunarity, Vector2 offset)
+    public static float[] GenerateNoiseMap(int mapSize, int seed, float scale, int octaves, float persistance, float lacunarity, Vector2 offset)
     {
-        var noiseMap = new float[mapWidth, mapHeight];
+        var noiseMap = new float[mapSize * mapSize];
 
         var prng = new System.Random(seed);
         var octaveOffsets = new Vector2[octaves];
@@ -22,9 +22,9 @@ public static class Noise
         float maxNoiseHeight = float.MinValue;
         float minNoiseHeight = float.MaxValue;
 
-        for (int y = 0; y < mapHeight; y++)
+        for (int y = 0; y < mapSize; y++)
         {
-            for (int x = 0; x < mapWidth; x++)
+            for (int x = 0; x < mapSize; x++)
             {
 
                 float amplitude = 1;
@@ -33,8 +33,8 @@ public static class Noise
 
                 for (int i = 0; i < octaves; i++)
                 {
-                    float sampleX = (x - mapWidth / 2f) / scale * frequency + octaveOffsets[i].x;
-                    float sampleY = (y - mapHeight / 2f) / scale * frequency + octaveOffsets[i].y;
+                    float sampleX = (x - mapSize / 2f) / scale * frequency + octaveOffsets[i].x;
+                    float sampleY = (y - mapSize / 2f) / scale * frequency + octaveOffsets[i].y;
 
                     float perlinValue = Mathf.PerlinNoise(sampleX, sampleY) * 2 - 1;
                     value += perlinValue * amplitude;
@@ -48,16 +48,17 @@ public static class Noise
                 else if (value < minNoiseHeight)
                     minNoiseHeight = value;
 
-                noiseMap[x, y] = value;
-
+                //noiseMap[x, y] = value;
+                noiseMap[y * mapSize + x] = value;
             }
         }
 
-        for (int y = 0; y < mapHeight; y++)
+        for (int y = 0; y < mapSize; y++)
         {
-            for (int x = 0; x < mapWidth; x++)
+            for (int x = 0; x < mapSize; x++)
             {
-                noiseMap[x, y] = Mathf.InverseLerp(minNoiseHeight, maxNoiseHeight, noiseMap[x, y]);
+                var idx = y * mapSize + x;
+                noiseMap[idx] = Mathf.InverseLerp(minNoiseHeight, maxNoiseHeight, noiseMap[idx]);
             }
         }
 

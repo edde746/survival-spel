@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class WorldGenerator : MonoBehaviour
 {
-    public int width = 400, height = 600;
+    public int size = 600;
     public int tileSize = 100;
     public float heightScale = 100f;
     public int seed;
@@ -17,19 +17,22 @@ public class WorldGenerator : MonoBehaviour
     public Vector2 offset;
     public AnimationCurve falloffCurve;
     public GameObject tilePrefab;
+    float[] map;
 
-    public float[,] GenerateFalloffMap(int width, int height)
+    Texture2D texture;
+
+    public float[] GenerateFalloffMap(int size)
     {
-        var map = new float[width, height];
+        var map = new float[size * size];
 
-        for (int y = 0; y < height; y++)
+        for (int y = 0; y < size; y++)
         {
-            for (int x = 0; x < width; x++)
+            for (int x = 0; x < size; x++)
             {
-                float xCoord = (float)x / width * 2 - 1;
-                float yCoord = (float)y / height * 2 - 1;
+                float xCoord = (float)x / size * 2 - 1;
+                float yCoord = (float)y / size * 2 - 1;
 
-                map[x, y] = falloffCurve.Evaluate(1f - Mathf.Max(Mathf.Abs(xCoord), Mathf.Abs(yCoord)));
+                map[y * size + x] = falloffCurve.Evaluate(1f - Mathf.Max(Mathf.Abs(xCoord), Mathf.Abs(yCoord)));
             }
         }
 
@@ -39,18 +42,19 @@ public class WorldGenerator : MonoBehaviour
     void Awake()
     {
         // Generate maps
-        var falloffMap = GenerateFalloffMap(width + 1, height + 1);
-        var noiseMap = Noise.GenerateNoiseMap(width + 1, height + 1, seed, scale, octaves, persistance, lacunarity, offset);
+        var falloffMap = GenerateFalloffMap(size);
+        map = Noise.GenerateNoiseMap(size, seed, scale, octaves, persistance, lacunarity, offset);
+        GetComponent<Erosion>().Erode(map, size, 90000);
 
         Debug.Log("Generated maps");
 
         // Instantiate tiles and apply meshes
-        for (int y = 0; y < height; y += tileSize)
+        for (int y = 0; y < size / tileSize; y++)
         {
-            for (int x = 0; x < width; x += tileSize)
+            for (int x = 0; x < size / tileSize; x++)
             {
                 // Get tile
-                var tile = Instantiate(tilePrefab, new Vector3(x, 0, y), Quaternion.identity);
+                var tile = Instantiate(tilePrefab, new Vector3(x * tileSize * tilePrefab.transform.localScale.x, 0, y * tileSize * tilePrefab.transform.localScale.z), Quaternion.identity);
                 tile.transform.parent = transform;
 
                 // Get mesh
@@ -60,12 +64,13 @@ public class WorldGenerator : MonoBehaviour
                 var vertices = new Vector3[(tileSize + 1) * (tileSize + 1)];
 
                 // Apply heightmap
-                for (int i = 0, z = 0; z <= tileSize; z++)
+                for (int i = 0, yy = 0; yy <= tileSize; yy++)
                 {
-                    for (int j = 0; j <= tileSize; j++)
+                    for (int xx = 0; xx <= tileSize; xx++)
                     {
-                        var height = noiseMap[x + j, y + z] * heightScale * falloffMap[x + j, y + z];
-                        vertices[i] = new Vector3(j, height, z);
+                        // Get index of map
+                        int index = (y * tileSize + yy) * (size) + (x * tileSize + xx);
+                        vertices[i] = new Vector3(xx, map[index] * heightScale * falloffMap[index], yy);
                         i++;
                     }
                 }
@@ -104,4 +109,16 @@ public class WorldGenerator : MonoBehaviour
         Debug.Log("Generated tiles");
     }
 
+    void OnGUI()
+    {
+        // Top right button to delete all children and call awake
+        if (GUI.Button(new Rect(Screen.width - 100, 0, 100, 50), "Generate"))
+        {
+            foreach (Transform child in transform)
+            {
+                Destroy(child.gameObject);
+            }
+            Awake();
+        }
+    }
 }

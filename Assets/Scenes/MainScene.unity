@@ -2281,6 +2281,7 @@ GameObject:
   m_Component:
   - component: {fileID: 762759842}
   - component: {fileID: 762759841}
+  - component: {fileID: 762759843}
   m_Layer: 6
   m_Name: World
   m_TagString: Untagged
@@ -2300,15 +2301,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58141397e9e7c4d4eb9527e324bd4bad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  width: 800
-  height: 1200
+  size: 601
   tileSize: 100
-  heightScale: 40
-  seed: 109
-  scale: 100
+  heightScale: 30
+  seed: 116
+  scale: 70
   octaves: 5
-  persistance: 0.5
-  lacunarity: 2
+  persistance: 0.49
+  lacunarity: 2.1
   offset: {x: 0, y: 0}
   falloffCurve:
     serializedVersion: 2
@@ -2350,6 +2350,30 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &762759843
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 762759840}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a14a4bf82cb8540f1a170f686a6406cc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  seed: 143
+  erosionRadius: 4
+  inertia: 0.426
+  sedimentCapacityFactor: 4
+  minSedimentCapacity: 0.01
+  erodeSpeed: 0.3
+  depositSpeed: 0.3
+  evaporateSpeed: 0.01
+  gravity: 4
+  maxDropletLifetime: 30
+  initialWaterVolume: 1
+  initialSpeed: 1
 --- !u!1001 &817712288
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2479,15 +2503,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2894698916591434107, guid: dc9bedbb650f5f9409c2161ad5f872f1, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 400
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2894698916591434107, guid: dc9bedbb650f5f9409c2161ad5f872f1, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 14.6
+      value: 12.8
       objectReference: {fileID: 0}
     - target: {fileID: 2894698916591434107, guid: dc9bedbb650f5f9409c2161ad5f872f1, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 600
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2894698916591434107, guid: dc9bedbb650f5f9409c2161ad5f872f1, type: 3}
       propertyPath: m_LocalRotation.w
@@ -6541,7 +6565,7 @@ PrefabInstance:
       objectReference: {fileID: 1463310061}
     - target: {fileID: 163890155700980592, guid: a4bafdbbcd584408d9fc4a5153277fcb, type: 3}
       propertyPath: spawnRadius
-      value: 200
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 163890155700980592, guid: a4bafdbbcd584408d9fc4a5153277fcb, type: 3}
       propertyPath: pickableText
@@ -6549,11 +6573,11 @@ PrefabInstance:
       objectReference: {fileID: 281284926}
     - target: {fileID: 163890155700980592, guid: a4bafdbbcd584408d9fc4a5153277fcb, type: 3}
       propertyPath: spawnPoint.x
-      value: 400
+      value: 300
       objectReference: {fileID: 0}
     - target: {fileID: 163890155700980592, guid: a4bafdbbcd584408d9fc4a5153277fcb, type: 3}
       propertyPath: spawnPoint.z
-      value: 600
+      value: 300
       objectReference: {fileID: 0}
     - target: {fileID: 5151914082073121828, guid: a4bafdbbcd584408d9fc4a5153277fcb, type: 3}
       propertyPath: inventoryUI

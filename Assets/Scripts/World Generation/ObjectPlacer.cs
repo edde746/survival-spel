@@ -26,7 +26,7 @@ public class ObjectPlacer : MonoBehaviour
         {
             point.y = hit.point.y + yOffset;
             // Check if we are below water level
-            if (point.y < 14.7f) return RandomSpot(center, range, findFloor);
+            if (point.y < 12.8f) return RandomSpot(center, range, findFloor);
             return (point, hit.normal);
         }
 
@@ -43,7 +43,7 @@ public class ObjectPlacer : MonoBehaviour
         // Get world dimensions
         var world = GameObject.Find("World");
         var worldGenerator = world.GetComponent<WorldGenerator>();
-        var worldSize = new Vector3(worldGenerator.width, 0f, worldGenerator.height);
+        var worldSize = new Vector3(worldGenerator.size, 0f, worldGenerator.size);
 
         if (placeInGroups)
         {

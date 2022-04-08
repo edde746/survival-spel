@@ -72,6 +72,7 @@ public class Slot : MonoBehaviour, IDropHandler, IDragHandler, IBeginDragHandler
                         // Fully consume the source slot
                         sourceSlot.entry.count = 0;
                         sourceSlot.entry.item = null;
+                        UpdateSlot(entry);
                         return;
                     }
                 }
