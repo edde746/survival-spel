@@ -108,17 +108,4 @@ public class WorldGenerator : MonoBehaviour
 
         Debug.Log("Generated tiles");
     }
-
-    void OnGUI()
-    {
-        // Top right button to delete all children and call awake
-        if (GUI.Button(new Rect(Screen.width - 100, 0, 100, 50), "Generate"))
-        {
-            foreach (Transform child in transform)
-            {
-                Destroy(child.gameObject);
-            }
-            Awake();
-        }
-    }
 }
