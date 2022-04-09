@@ -54,7 +54,7 @@ public class WorldGenerator : MonoBehaviour
             for (int x = 0; x < size / tileSize; x++)
             {
                 // Get tile
-                var tile = Instantiate(tilePrefab, new Vector3(x * tileSize * tilePrefab.transform.localScale.x, 0, y * tileSize * tilePrefab.transform.localScale.z), Quaternion.identity);
+                var tile = Instantiate(tilePrefab, new Vector3(x * tileSize * tilePrefab.transform.localScale.x, transform.position.y, y * tileSize * tilePrefab.transform.localScale.z), Quaternion.identity);
                 tile.transform.parent = transform;
 
                 // Get mesh

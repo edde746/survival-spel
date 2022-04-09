@@ -26,7 +26,7 @@ public class ObjectPlacer : MonoBehaviour
         {
             point.y = hit.point.y + yOffset;
             // Check if we are below water level
-            if (point.y < 12.8f) return RandomSpot(center, range, findFloor);
+            if (point.y < 0.1f) return RandomSpot(center, range, findFloor);
             return (point, hit.normal);
         }
 
@@ -59,6 +59,7 @@ public class ObjectPlacer : MonoBehaviour
                     var spot = RandomSpot(groupPoint.position, groupRange);
                     if (spot.position == Vector3.zero) continue;
                     var newObject = Instantiate(objectToSpawn, spot.position, Quaternion.Euler(0f, Random.Range(0f, 360f), 0f));
+                    newObject.transform.parent = transform;
                     if (alignWithGround)
                         newObject.transform.rotation = Quaternion.FromToRotation(transform.up, spot.normal) * newObject.transform.rotation;
                 }
@@ -72,11 +73,10 @@ public class ObjectPlacer : MonoBehaviour
                 var spot = RandomSpot(worldSize / 2f, worldSize);
                 if (spot.position == Vector3.zero) continue;
                 var newObject = Instantiate(GetRandomObject(), spot.position, Quaternion.Euler(0f, Random.Range(0f, 360f), 0f));
+                newObject.transform.parent = transform;
                 if (alignWithGround)
                     newObject.transform.rotation = Quaternion.FromToRotation(transform.up, spot.normal) * newObject.transform.rotation;
             }
         }
-
-        Debug.Log(gameObject.name);
     }
 }

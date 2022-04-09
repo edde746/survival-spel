@@ -1,4 +1,4 @@
 {
 	"name": "Scripts",
-	"references": [ "Unity.TextMeshPro" ]
+	"references": [ "Unity.TextMeshPro", "NavMeshComponents" ]
 }

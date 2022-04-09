@@ -115,13 +115,8 @@ public class Slot : MonoBehaviour, IDropHandler, IDragHandler, IBeginDragHandler
         UpdateSlot(entry);
 
         // Handle item drop logic
-        if (eventData.pointerEnter != null)
-        {
-            var slot = eventData.pointerEnter.GetComponent<Slot>();
-            if (slot) return;
-        }
+        if (eventData.pointerEnter != null) return;
 
-        Debug.Log("Should physically drop item here");
         // Spawn Item Bag with the contents of the slot
         var position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         var itemBag = Instantiate(Globals.Instance.itemBagPrefab, position, Quaternion.identity);
