@@ -8,6 +8,7 @@ TagManager:
   - ItemAnchor
   - Interactable
   - Canvas
+  - Animal
   layers:
   - Default
   - TransparentFX

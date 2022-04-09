@@ -10,6 +10,7 @@ public class Globals : MonoBehaviour
     public GameObject itemBagPrefab;
     public List<AudioClip> eatSounds;
     public AudioClip craftSound;
+    public GameObject crosshair;
 
     public static Texture2D SolidColorTexture(Color color)
     {

@@ -33,6 +33,17 @@ public class PlayerScript : MonoBehaviour
 
     void Start()
     {
+        // Get components
+        playerCamera = GetComponentInChildren<Camera>();
+        footstepSource = GetComponentInChildren<AudioSource>();
+        controller = GetComponent<CharacterController>();
+        movement = GetComponent<Movement>();
+
+        Spawn();
+    }
+
+    void Spawn()
+    {
         // Set spawnpoint
         var point = new Vector3(spawnPoint.x + Random.Range(spawnRadius / -2f, spawnRadius / 2f), 200f, spawnPoint.z + Random.Range(spawnRadius / -2f, spawnRadius / 2f));
 
@@ -41,12 +52,6 @@ public class PlayerScript : MonoBehaviour
             point.y = hit.point.y + 3f;
 
         transform.position = point;
-
-        // Get components
-        playerCamera = GetComponentInChildren<Camera>();
-        footstepSource = GetComponentInChildren<AudioSource>();
-        controller = GetComponent<CharacterController>();
-        movement = GetComponent<Movement>();
 
         // Generate random vitals to start
         health = Random.Range(50f, 90f);
@@ -75,7 +80,6 @@ public class PlayerScript : MonoBehaviour
                 Destroy(healthNotification);
         }
 
-
         // Dehydrated
         if (thirst < 7f)
         {
@@ -88,6 +92,10 @@ public class PlayerScript : MonoBehaviour
             if (thirstNotification != null)
                 Destroy(thirstNotification);
         }
+
+        // Dead
+        if (health < 0f)
+            Die();
 
         // Check if busy or mouse not locked
         if (itemBusy || !Cursor.lockState.Equals(CursorLockMode.Locked))
@@ -109,6 +117,7 @@ public class PlayerScript : MonoBehaviour
         RaycastHit hit;
         if (Physics.Raycast(playerCamera.transform.position, playerCamera.transform.forward, out hit, 5f, ~(1 << 2)))
         {
+            // Check if we are aiming at a pickable item
             if (hit.transform.gameObject.CompareTag("Interactable"))
             {
                 var pickable = hit.transform.GetComponent<Pickable>();
@@ -122,22 +131,37 @@ public class PlayerScript : MonoBehaviour
                 }
             }
 
+            // Handle usage of item
             if (Input.GetButton("Fire1") && activeItem != null)
             {
                 if (activeItem.count == 0 || activeItem.item == null) return;
 
                 if (activeItem.item.flags.HasFlag(ItemFlags.Tool))
                 {
+                    // Use tool
                     var farmable = hit.transform.gameObject.GetComponent<Farmable>();
                     if (farmable != null && (farmable.toolType == 0 || activeItem.item.flags.HasFlag(farmable.toolType)))
                     {
                         StartCoroutine(Farm(farmable, activeItem.item));
                     }
                 }
-                else if (activeItem.item.flags.HasFlag(ItemFlags.Placeable))
+
+                if (activeItem.item.flags.HasFlag(ItemFlags.Placeable))
                 {
+                    // Place item
                     StartCoroutine(Place(activeItem.item.model, hit.point));
                     activeItem.Consume(1);
+                }
+
+                if (activeItem.item.flags.HasFlag(ItemFlags.Weapon))
+                {
+                    // Check if we are aiming at an animal
+                    var animal = hit.transform.gameObject.GetComponent<AnimalScript>();
+                    if (animal != null && animal.IsAlive())
+                    {
+                        // Attack animal
+                        StartCoroutine(Attack(animal, activeItem.item));
+                    }
                 }
             }
         }
@@ -170,14 +194,14 @@ public class PlayerScript : MonoBehaviour
         itemBusy = false;
     }
 
+    // Farm coroutine
     IEnumerator Farm(Farmable farmable, Item activeItem)
     {
         itemBusy = true;
         // Apply damage & start tool animation
         farmable.ApplyDamage(activeItem.GetStat("damage"));
         var animator = Inventory.Instance.activeItemModel?.GetComponent<Animator>() ?? null;
-        if (animator != null)
-            animator.SetTrigger("Using");
+        if (animator != null) animator.SetTrigger("Using");
         yield return new WaitForSeconds((activeItem?.GetStat("cooldown") ?? 1f) * .5f);
         // Award items to player
         var giveAmount = (int)Mathf.Floor(farmable.itemAmount * (1f - farmable.health / farmable.maxHealth));
@@ -188,6 +212,7 @@ public class PlayerScript : MonoBehaviour
         itemBusy = false;
     }
 
+    // Place coroutine
     IEnumerator Place(GameObject model, Vector3 point)
     {
         itemBusy = true;
@@ -195,5 +220,33 @@ public class PlayerScript : MonoBehaviour
         // TODO: Sound FX & PTFX
         yield return new WaitForSeconds(.5f);
         itemBusy = false;
+    }
+
+    // Attack coroutine
+    IEnumerator Attack(AnimalScript animal, Item activeItem)
+    {
+        itemBusy = true;
+        // Apply damage & start wewapon animation
+        animal.ApplyDamage(activeItem.GetStat("damage"));
+        var animator = Inventory.Instance.activeItemModel?.GetComponent<Animator>() ?? null;
+        if (animator != null) animator.SetTrigger("Using");
+        yield return new WaitForSeconds((activeItem?.GetStat("cooldown") ?? 1f) * .5f);
+        // Wait then stop animation
+        yield return new WaitForSeconds((activeItem?.GetStat("cooldown") ?? 1f) * .5f);
+        itemBusy = false;
+    }
+
+    // Apply damage function
+    public void ApplyDamage(float damage)
+    {
+        health -= damage;
+        if (health <= 0f)
+            Die();
+    }
+
+    public void Die()
+    {
+        // TODO: Show some kind of game over/respawn screen
+        // Debug.Log("You died!");
     }
 }

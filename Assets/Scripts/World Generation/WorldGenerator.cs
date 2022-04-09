@@ -46,8 +46,6 @@ public class WorldGenerator : MonoBehaviour
         map = Noise.GenerateNoiseMap(size, seed, scale, octaves, persistance, lacunarity, offset);
         GetComponent<Erosion>().Erode(map, size, 90000);
 
-        Debug.Log("Generated maps");
-
         // Instantiate tiles and apply meshes
         for (int y = 0; y < size / tileSize; y++)
         {
@@ -105,7 +103,5 @@ public class WorldGenerator : MonoBehaviour
                 mesh.RecalculateBounds();
             }
         }
-
-        Debug.Log("Generated tiles");
     }
 }

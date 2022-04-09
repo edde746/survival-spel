@@ -15,7 +15,7 @@ MonoBehaviour:
   id: 7
   flags: 128
   stackable: 10
-  icon: {fileID: 21300000, guid: e0ae35e5520f0441fac9ab73cc0a9185, type: 3}
+  icon: {fileID: 21300000, guid: 51083b78df09941a79e02ac5ae9af4c9, type: 3}
   model: {fileID: 0}
   stats:
   - name: hunger

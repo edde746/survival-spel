@@ -10,17 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3ed7742dc7cdbdc43ac60fd0ed8689eb, type: 3}
-  m_Name: Rock
+  m_Name: Wolf Meat
   m_EditorClassIdentifier: 
-  id: 6
-  flags: 326
-  stackable: 1
-  icon: {fileID: 21300000, guid: 822f5fb0f1ea04a54b31919840326543, type: 3}
-  model: {fileID: 8121945129646057398, guid: 7071210e2d85d4d409c25b9c901ed39f, type: 3}
+  id: 8
+  flags: 128
+  stackable: 5
+  icon: {fileID: 21300000, guid: 4ed9a4daddb4b456d9b9c78623cb1906, type: 3}
+  model: {fileID: 0}
   stats:
-  - name: damage
-    value: 20
-  - name: gather
-    value: 0.3
-  - name: cooldown
-    value: 0.6
+  - name: hunger
+    value: 15
