@@ -65,17 +65,7 @@ public class Inventory : MonoBehaviour, ItemHolder
             inventoryUI.SetActive(!inventoryUI.activeSelf);
             AudioSource.PlayClipAtPoint(openSound, transform.position);
 
-            if (inventoryUI.activeSelf)
-            {
-                MouseLook.disableLook = true;
-                MouseLook.lockCursor = false;
-                Cursor.lockState = CursorLockMode.None;
-            }
-            else
-            {
-                MouseLook.disableLook = false;
-                MouseLook.lockCursor = true;
-            }
+            Globals.SetGUICursorActive(inventoryUI.activeSelf);
         }
 
         for (int i = 0; i < NumberKeys.Length; i++)
@@ -164,6 +154,7 @@ public class Inventory : MonoBehaviour, ItemHolder
         return GiveItem(ItemDatabase.GetItem(id), count);
     }
 
+    // TODO: Inventory overflow
     public bool GiveItem(Item item, int count = 1)
     {
         if (count <= 0 || !item) return false;

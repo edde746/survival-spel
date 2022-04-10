@@ -11,6 +11,7 @@ public class Globals : MonoBehaviour
     public List<AudioClip> eatSounds;
     public AudioClip craftSound;
     public GameObject crosshair;
+    public Material buildingBlockPreviewMaterial;
 
     public static Texture2D SolidColorTexture(Color color)
     {
@@ -34,6 +35,21 @@ public class Globals : MonoBehaviour
         if (Instance.craftSound != null)
         {
             AudioSource.PlayClipAtPoint(Instance.craftSound, position);
+        }
+    }
+
+    public static void SetGUICursorActive(bool enable)
+    {
+        if (enable)
+        {
+            MouseLook.disableLook = true;
+            MouseLook.lockCursor = false;
+            Cursor.lockState = CursorLockMode.None;
+        }
+        else
+        {
+            MouseLook.disableLook = false;
+            MouseLook.lockCursor = true;
         }
     }
 

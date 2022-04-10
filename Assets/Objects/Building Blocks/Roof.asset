@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 538c344ee07544428a1447dc8c15a180, type: 3}
+  m_Name: Roof
+  m_EditorClassIdentifier: 
+  id: 4
+  block: {fileID: 4219197076120311961, guid: d657cc08340bc43f38caf137ba4d4341, type: 3}
+  sprite: {fileID: 21300000, guid: 0f5a65a2afcf54310a11145442f50580, type: 3}
+  flags: 0
+  snapsTo: 2
+  cost: 100
