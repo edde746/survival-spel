@@ -24,6 +24,7 @@ public class PlayerScript : MonoBehaviour
     [HideInInspector]
     public BuildingBlock selectedBlock;
     public GameObject blockPickerGUI;
+    public int rotationOffset = 0;
 
     public static PlayerScript Instance { get; private set; }
 
@@ -213,6 +214,12 @@ public class PlayerScript : MonoBehaviour
                 Globals.SetGUICursorActive(true);
             }
 
+            // Cycle rotation (0-3) on R key
+            if (Input.GetKeyDown(KeyCode.R))
+            {
+                rotationOffset = (rotationOffset + 1) % 4;
+            }
+
             if (selectedBlock == null) return;
 
             RaycastHit hit;
@@ -222,22 +229,27 @@ public class PlayerScript : MonoBehaviour
 
             // Find snapping point
             var snapPoints = Physics.RaycastAll(playerCamera.transform.position, playerCamera.transform.forward, 5f, 1 << 8);
-            if (snapPoints.Length > 0)
+            foreach (var point in snapPoints)
             {
-                foreach (var point in snapPoints)
-                {
-                    if (point.transform.GetComponent<BuildingSnap>().type == selectedBlock.snapsTo)
-                    {
-                        // Check if point is occupied
-                        // Get point collider
-                        var pointCollider = point.collider;
-                        var overlaps = Physics.OverlapBox(pointCollider.bounds.center, pointCollider.bounds.extents * 0.5f, Quaternion.identity, 1 << 9, QueryTriggerInteraction.Collide);
-                        if (overlaps.Length > 0) return;
 
-                        previewPosition = point.transform.position;
-                        previewRotation = point.transform.rotation;
-                        break;
+                if (selectedBlock.snapsTo.HasFlag(point.transform.GetComponent<BuildingSnap>().type))
+                {
+                    // Check if point is occupied
+                    // Get point collider
+                    var pointCollider = point.collider;
+                    var overlaps = Physics.OverlapBox(pointCollider.bounds.center, pointCollider.bounds.extents * 0.5f, Quaternion.identity, 1 << 9, QueryTriggerInteraction.Collide);
+                    foreach (var overlap in overlaps)
+                    {
+                        Debug.Log(overlap.transform.name);
                     }
+                    if (overlaps.Length > 0) return;
+
+                    previewPosition = point.transform.position;
+                    previewRotation = point.transform.rotation;
+                    // Apply rotation offset
+                    if (selectedBlock.flags.HasFlag(BlockFlag.CanRotate))
+                        previewRotation.eulerAngles = new Vector3(0f, previewRotation.eulerAngles.y + rotationOffset * 90f, 0f);
+                    break;
                 }
             }
 

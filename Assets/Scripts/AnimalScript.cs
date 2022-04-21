@@ -19,6 +19,7 @@ public class AnimalScript : MonoBehaviour
     public float attackRange = 2f;
     public float attackStrength = 10f;
     public List<ItemEntry> drops;
+    public List<Vector3> legPositions;
     bool busy = false;
     Vector3 targetRotation;
     Animator animator;
@@ -40,12 +41,6 @@ public class AnimalScript : MonoBehaviour
         // Get ground normal
         RaycastHit hit;
         var forward = transform.forward;
-
-        if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.down), out hit, 5f, 1 << 6))
-        {
-            targetRotation = Quaternion.LookRotation(transform.TransformDirection(Vector3.forward), hit.normal).eulerAngles;
-        }
-
 
         if (state == AnimalState.Idle)
         {

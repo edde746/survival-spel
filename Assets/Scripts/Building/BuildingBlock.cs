@@ -6,6 +6,8 @@ using UnityEngine;
 public enum BlockFlag
 {
     CanPlaceOnGround = 1 << 0,
+    ForgoeCollision = 1 << 1,
+    CanRotate = 1 << 2,
 }
 
 [CreateAssetMenu(fileName = "New BuildingBlock", menuName = "Assets/BuildingBlock")]

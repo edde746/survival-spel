@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 538c344ee07544428a1447dc8c15a180, type: 3}
-  m_Name: Foundation
+  m_Name: Stairs
   m_EditorClassIdentifier: 
-  id: 1
-  block: {fileID: 5937672661980371890, guid: a643b99d9eb1a44d398fcb1d6655a287, type: 3}
+  id: 6
+  block: {fileID: 2492969987723473285, guid: b2c65c032c3264dc39b84a26d6e17c14, type: 3}
   sprite: {fileID: 21300000, guid: 6d39a583304fb446698533009391522b, type: 3}
-  flags: 5
-  snapsTo: 4
+  flags: 6
+  snapsTo: 10
   cost: 100

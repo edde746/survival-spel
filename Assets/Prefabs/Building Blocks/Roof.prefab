@@ -44,7 +44,7 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 8, y: 1, z: 8}
+  m_Size: {x: 8, y: 0.2, z: 8}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &392446318301395752
 MonoBehaviour:
@@ -103,7 +103,7 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 8, y: 1, z: 8}
+  m_Size: {x: 8, y: 0.2, z: 8}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &8743847196220391793
 MonoBehaviour:
@@ -162,7 +162,7 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 8, y: 1, z: 8}
+  m_Size: {x: 8, y: 0.2, z: 8}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &2707181337553911065
 MonoBehaviour:
@@ -221,7 +221,7 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 8, y: 8, z: 1}
+  m_Size: {x: 8, y: 8, z: 0.2}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &3388869692922923544
 MonoBehaviour:
@@ -313,7 +313,7 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 8, y: 8, z: 1}
+  m_Size: {x: 8, y: 8, z: 0.2}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &4905295083849791040
 MonoBehaviour:
@@ -412,7 +412,7 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 8, y: 1, z: 8}
+  m_Size: {x: 8, y: 0.2, z: 8}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &472699578151390487
 MonoBehaviour:
@@ -471,7 +471,7 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 8, y: 8, z: 1}
+  m_Size: {x: 8, y: 8, z: 0.2}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &6107790384217480071
 MonoBehaviour:
@@ -530,7 +530,7 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 8, y: 8, z: 1}
+  m_Size: {x: 8, y: 8, z: 0.2}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &7048996847540654776
 MonoBehaviour:
@@ -589,7 +589,7 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 8, y: 1, z: 8}
+  m_Size: {x: 8, y: 0.2, z: 8}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &8013518753936256036
 MonoBehaviour:
