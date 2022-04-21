@@ -12,7 +12,7 @@ public class PlayerScript : MonoBehaviour
     bool busy = false;
     [HideInInspector]
     public float health = 100f, hunger = 100f, thirst = 100f;
-    public GameObject pickableText;
+    public GameObject crosshairTooltip;
     public Vitalbar healthBar, hungerBar, thirstBar;
     GameObject healthNotification, hungerNotification, thirstNotification;
     AudioSource footstepSource;
@@ -65,45 +65,9 @@ public class PlayerScript : MonoBehaviour
 
     void Update()
     {
+        VitalsUpdate();
         HammerUpdate();
         var showCrosshair = false;
-
-        // Update vitals
-        hunger -= Time.deltaTime * 0.09f;
-        thirst -= Time.deltaTime * 0.1f;
-        healthBar.SetVital(health / 100f);
-        hungerBar.SetVital(hunger / 100f);
-        thirstBar.SetVital(thirst / 100f);
-
-        // Starving
-        if (hunger < 5f)
-        {
-            health -= Time.deltaTime * 0.7f;
-            if (healthNotification == null)
-                healthNotification = Globals.CreateNotification("You are starving!", 0f);
-        }
-        else
-        {
-            if (healthNotification != null)
-                Destroy(healthNotification);
-        }
-
-        // Dehydrated
-        if (thirst < 7f)
-        {
-            health -= Time.deltaTime * 0.6f;
-            if (thirstNotification == null)
-                thirstNotification = Globals.CreateNotification("You are dehydrated!", 0f);
-        }
-        else
-        {
-            if (thirstNotification != null)
-                Destroy(thirstNotification);
-        }
-
-        // Dead
-        if (health < 0f)
-            Die();
 
         // Check if mouse not locked
         if (!Cursor.lockState.Equals(CursorLockMode.Locked))
@@ -117,6 +81,9 @@ public class PlayerScript : MonoBehaviour
 
         RaycastHit hit;
         var activeItem = Inventory.Instance.GetActiveItem();
+
+        // Handle eating active item (if food)
+        // TODO: Drinking
         if (activeItem?.item?.flags.HasFlag(ItemFlags.Food) ?? false && Input.GetButtonDown("Fire1") && hunger < 98f)
         {
             hunger = Mathf.Clamp(hunger + activeItem.item.GetStat("hunger"), 0f, 100f);
@@ -125,7 +92,7 @@ public class PlayerScript : MonoBehaviour
             StartCoroutine(BusyFor(1f));
         }
 
-        var showPickableText = false;
+        var showCrosshairTooltip = false;
         if (Physics.Raycast(playerCamera.transform.position, playerCamera.transform.forward, out hit, 2f, ~(1 << 2)))
         {
             // Check if we are aiming at a pickable item
@@ -135,9 +102,10 @@ public class PlayerScript : MonoBehaviour
                 var pickable = hit.transform.GetComponent<Pickable>();
                 if (pickable != null)
                 {
-                    if (!showPickableText)
-                        pickableText.GetComponent<TextMeshProUGUI>().text = pickable.GetPickupText();
-                    showPickableText = true;
+                    if (!showCrosshairTooltip)
+                        crosshairTooltip.GetComponent<TextMeshProUGUI>().text = pickable.GetPickupText();
+
+                    showCrosshairTooltip = true;
                     if (Input.GetKeyDown(KeyCode.E))
                         pickable.Pick();
                 }
@@ -146,6 +114,7 @@ public class PlayerScript : MonoBehaviour
             // Handle usage of item
             if (Input.GetButton("Fire1") && activeItem != null)
             {
+                // Check that item is valid
                 if (activeItem.count == 0 || activeItem.item == null) return;
 
                 if (activeItem.item.flags.HasFlag(ItemFlags.Tool))
@@ -168,6 +137,7 @@ public class PlayerScript : MonoBehaviour
                 if (activeItem.item.flags.HasFlag(ItemFlags.Weapon))
                 {
                     // Check if we are aiming at an animal
+                    // TODO: Creature/Living thing base class
                     var animal = hit.transform.gameObject.GetComponent<AnimalScript>();
                     if (animal != null && animal.IsAlive())
                     {
@@ -177,8 +147,23 @@ public class PlayerScript : MonoBehaviour
                 }
             }
         }
+        else if (Physics.Raycast(playerCamera.transform.position, playerCamera.transform.forward, out hit, 2.5f, 1 << 4))
+        {
 
-        pickableText.SetActive(showPickableText);
+            if (!showCrosshairTooltip)
+                crosshairTooltip.GetComponent<TextMeshProUGUI>().text = "Press [E] to drink";
+            showCrosshairTooltip = true;
+            showCrosshair = true;
+
+            // Handle water actions (drinking, filling container)
+            // TODO: Filling water container
+
+            if (Input.GetKeyDown(KeyCode.E))
+            {
+                // Drinking direct from water source
+                thirst = Mathf.Min(thirst + Random.Range(5f, 10f), 100f);
+            }
+        }
 
         // Play footsteps if player is moving
         if (Mathf.Abs(controller.velocity.magnitude) > 0f && movement.isOnGround)
@@ -198,8 +183,9 @@ public class PlayerScript : MonoBehaviour
                 footstepSource.Stop();
         }
 
-        // Update crosshair
+        // Update UI elements
         Globals.Instance.crosshair.SetActive(showCrosshair);
+        crosshairTooltip.SetActive(showCrosshairTooltip);
     }
 
     public void SetActiveBuildingBlock(BuildingBlock block)
@@ -308,6 +294,46 @@ public class PlayerScript : MonoBehaviour
             Destroy(previewBlock);
             previewBlock = null;
         }
+    }
+
+    void VitalsUpdate()
+    {
+        // Update vitals
+        hunger -= Time.deltaTime * 0.09f;
+        thirst -= Time.deltaTime * 0.1f;
+        healthBar.SetVital(health / 100f);
+        hungerBar.SetVital(hunger / 100f);
+        thirstBar.SetVital(thirst / 100f);
+
+        // Starving
+        if (hunger < 5f)
+        {
+            health -= Time.deltaTime * 0.7f;
+            if (healthNotification == null)
+                healthNotification = Globals.CreateNotification("You are starving!", 0f);
+        }
+        else
+        {
+            if (healthNotification != null)
+                Destroy(healthNotification);
+        }
+
+        // Dehydrated
+        if (thirst < 7f)
+        {
+            health -= Time.deltaTime * 0.6f;
+            if (thirstNotification == null)
+                thirstNotification = Globals.CreateNotification("You are dehydrated!", 0f);
+        }
+        else
+        {
+            if (thirstNotification != null)
+                Destroy(thirstNotification);
+        }
+
+        // Dead
+        if (health < 0f)
+            Die();
     }
 
     IEnumerator BusyFor(float time)

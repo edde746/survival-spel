@@ -20,7 +20,7 @@ public class AnimalScript : MonoBehaviour
     public float attackStrength = 10f;
     public List<ItemEntry> drops;
     bool busy = false;
-    float targetRotation;
+    Vector3 targetRotation;
     Animator animator;
     AnimalState state = AnimalState.Wander;
     CharacterController controller;
@@ -40,8 +40,12 @@ public class AnimalScript : MonoBehaviour
         // Get ground normal
         RaycastHit hit;
         var forward = transform.forward;
-        if (Physics.Raycast(transform.position, Vector3.down, out hit, Mathf.Infinity, 1 << 6))
-            forward = Vector3.ProjectOnPlane(transform.forward, hit.normal).normalized;
+
+        if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.down), out hit, 5f, 1 << 6))
+        {
+            targetRotation = Quaternion.LookRotation(transform.TransformDirection(Vector3.forward), hit.normal).eulerAngles;
+        }
+
 
         if (state == AnimalState.Idle)
         {
@@ -57,7 +61,7 @@ public class AnimalScript : MonoBehaviour
                 if (Vector3.Angle(transform.forward, hit.point - transform.position) > 30f)
                 {
                     // Randomly turn
-                    targetRotation = transform.localEulerAngles.y + Random.Range(-30f, 30f);
+                    targetRotation.y = transform.localEulerAngles.y + Random.Range(-30f, 30f);
                 }
             }
 
@@ -71,8 +75,8 @@ public class AnimalScript : MonoBehaviour
                 if (hit.point.y < 0f)
                 {
                     // Turn around
-                    targetRotation = transform.localEulerAngles.y + 180f;
-                    transform.localEulerAngles = new Vector3(0f, targetRotation, 0f);
+                    targetRotation.y = transform.localEulerAngles.y + 180f;
+                    transform.localEulerAngles = targetRotation;
                 }
             }
 
@@ -81,7 +85,7 @@ public class AnimalScript : MonoBehaviour
 
             // Slightly randomize rotation
             if (Random.Range(0f, 1f) < 0.01f)
-                targetRotation = transform.localEulerAngles.y + Random.Range(-30f, 30f);
+                targetRotation.y = transform.localEulerAngles.y + Random.Range(-30f, 30f);
 
             if (Random.Range(0f, 1f) < 0.001f)
                 state = AnimalState.Idle;
@@ -103,7 +107,7 @@ public class AnimalScript : MonoBehaviour
             else
             {
                 // Turn towards player
-                targetRotation = Mathf.Atan2(player.transform.position.x - transform.position.x, player.transform.position.z - transform.position.z) * Mathf.Rad2Deg;
+                targetRotation.y = Mathf.Atan2(player.transform.position.x - transform.position.x, player.transform.position.z - transform.position.z) * Mathf.Rad2Deg;
 
                 // Run towards player
                 controller.SimpleMove(forward * Time.deltaTime * walkSpeed * 2f);
@@ -117,7 +121,7 @@ public class AnimalScript : MonoBehaviour
         // Lerp animator speed
         animator.SetFloat("Speed", Mathf.Lerp(animator.GetFloat("Speed"), controller.velocity.magnitude, Time.deltaTime * 10f));
         // Lerp target rotation
-        transform.localEulerAngles = new Vector3(0f, Mathf.LerpAngle(transform.localEulerAngles.y, targetRotation, Time.deltaTime * 10f), 0f);
+        transform.localEulerAngles = Vector3.Lerp(transform.localEulerAngles, targetRotation, Time.deltaTime * 10f);
     }
 
     // Busy coroutine
@@ -141,6 +145,13 @@ public class AnimalScript : MonoBehaviour
             {
                 inventory.GiveItem(entry.item, entry.count);
             }
+
+            // Disable all colliders
+            foreach (var collider in GetComponentsInChildren<Collider>())
+            {
+                collider.enabled = false;
+            }
+
             // Destroy the animal
             Destroy(gameObject, 25f);
         }

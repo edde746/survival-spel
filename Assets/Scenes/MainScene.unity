@@ -1157,7 +1157,7 @@ GameObject:
   - component: {fileID: 281284929}
   - component: {fileID: 281284928}
   m_Layer: 5
-  m_Name: Pickable Text
+  m_Name: Crosshair Tooltip
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2163,6 +2163,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 647439366987c4222a5498b993f7ed8f, type: 2}
   - {fileID: 11400000, guid: cff295da0d4bb4e519d6c17230c130b6, type: 2}
   - {fileID: 11400000, guid: 277eb392330c04dda9199e546018aa1d, type: 2}
+  - {fileID: 11400000, guid: c6eaf997a7ab49c46af930b9a6d090ec, type: 2}
 --- !u!114 &594705686
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2894,7 +2895,7 @@ GameObject:
   - component: {fileID: 996090602}
   - component: {fileID: 996090601}
   - component: {fileID: 996090605}
-  m_Layer: 0
+  m_Layer: 4
   m_Name: Water
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5531,6 +5532,60 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1723116564}
   m_CullTransparentMesh: 1
+--- !u!1 &1730582224
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1730582225}
+  - component: {fileID: 1730582226}
+  m_Layer: 0
+  m_Name: Deer
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1730582225
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1730582224}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2094171441}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1730582226
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1730582224}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc2e19e11c54f4ac2bae9e6454203c8a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  objects:
+  - {fileID: 4463136504611335175, guid: 77345a44b1605664fbb8deedc5d7ed42, type: 3}
+  yOffset: 2
+  objectsToPlace: 50
+  placeInGroups: 0
+  mixGroups: 0
+  groupRange: 0
+  minGroupCount: 0
+  maxGroupCount: 0
+  alignWithGround: 1
 --- !u!1 &1795745025
 GameObject:
   m_ObjectHideFlags: 0
@@ -6598,6 +6653,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1570404675}
+  - {fileID: 1730582225}
   m_Father: {fileID: 0}
   m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -7243,6 +7299,10 @@ PrefabInstance:
       propertyPath: blockPickerGUI
       value: 
       objectReference: {fileID: 435619571}
+    - target: {fileID: 163890155700980592, guid: a4bafdbbcd584408d9fc4a5153277fcb, type: 3}
+      propertyPath: crosshairTooltip
+      value: 
+      objectReference: {fileID: 281284926}
     - target: {fileID: 5151914082073121828, guid: a4bafdbbcd584408d9fc4a5153277fcb, type: 3}
       propertyPath: inventoryUI
       value: 

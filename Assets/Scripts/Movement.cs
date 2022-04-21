@@ -23,7 +23,7 @@ public class Movement : MonoBehaviour
 
     void Update()
     {
-        onGround = Physics.CheckSphere(transform.position + new Vector3(0f, -0.6f, 0f), 0.5f, ~(1 << 2));
+        onGround = Physics.CheckSphere(transform.position + new Vector3(0f, -0.65f * transform.localScale.y, 0f), 0.5f, ~(1 << 2 | 1 << 4));
         if (onGround && velocity.y < 0f)
         {
             velocity.y = -2f;
