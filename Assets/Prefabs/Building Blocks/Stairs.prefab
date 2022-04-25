@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3013785914305932095}
   - component: {fileID: 3562962379543571282}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: Stairs
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -60,7 +60,7 @@ GameObject:
   - component: {fileID: 4668709359065511732}
   - component: {fileID: 6624476359605283839}
   - component: {fileID: 6524770234285041066}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: Cube.003
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -142,7 +142,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3788799106467082223}
   - component: {fileID: 2513911189347588986}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: Bottom Collider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -188,7 +188,7 @@ GameObject:
   - component: {fileID: 6957188299465198829}
   - component: {fileID: 549420562126660356}
   - component: {fileID: 6398643592926620441}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: Cube.002
   m_TagString: Untagged
   m_Icon: {fileID: 0}

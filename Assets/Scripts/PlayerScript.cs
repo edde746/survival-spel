@@ -231,18 +231,16 @@ public class PlayerScript : MonoBehaviour
             var snapPoints = Physics.RaycastAll(playerCamera.transform.position, playerCamera.transform.forward, 5f, 1 << 8);
             foreach (var point in snapPoints)
             {
-
                 if (selectedBlock.snapsTo.HasFlag(point.transform.GetComponent<BuildingSnap>().type))
                 {
                     // Check if point is occupied
                     // Get point collider
                     var pointCollider = point.collider;
                     var overlaps = Physics.OverlapBox(pointCollider.bounds.center, pointCollider.bounds.extents * 0.5f, Quaternion.identity, 1 << 9, QueryTriggerInteraction.Collide);
-                    foreach (var overlap in overlaps)
-                    {
-                        Debug.Log(overlap.transform.name);
-                    }
-                    if (overlaps.Length > 0) return;
+
+                    // Check if point is occupied
+                    if (overlaps.Length > 0 && !selectedBlock.flags.HasFlag(BlockFlag.ForgoeCollision))
+                        return;
 
                     previewPosition = point.transform.position;
                     previewRotation = point.transform.rotation;
