@@ -14,7 +14,7 @@ OcclusionCullingSettings:
 RenderSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 9
-  m_Fog: 0
+  m_Fog: 1
   m_FogColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
   m_FogMode: 3
   m_FogDensity: 0.01
@@ -97,8 +97,8 @@ LightmapSettings:
     m_ExportTrainingData: 0
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
-  m_LightingDataAsset: {fileID: 0}
-  m_LightingSettings: {fileID: 0}
+  m_LightingDataAsset: {fileID: 112000000, guid: 6d4286fe3e9cab84e9b036a134759d63, type: 2}
+  m_LightingSettings: {fileID: 4890085278179872738, guid: eda455dad65c01b4b9cb5bbe4c1aac6f, type: 2}
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -358,6 +358,8 @@ MonoBehaviour:
   minGroupCount: 3
   maxGroupCount: 5
   alignWithGround: 1
+  useWorldPosition: 0
+  customGenerationSize: {x: 0, y: 0}
 --- !u!1 &116268817
 GameObject:
   m_ObjectHideFlags: 0
@@ -1678,6 +1680,8 @@ MonoBehaviour:
   minGroupCount: 30
   maxGroupCount: 45
   alignWithGround: 1
+  useWorldPosition: 0
+  customGenerationSize: {x: 0, y: 0}
 --- !u!4 &447044824
 Transform:
   m_ObjectHideFlags: 0
@@ -2423,6 +2427,8 @@ MonoBehaviour:
   minGroupCount: 10
   maxGroupCount: 15
   alignWithGround: 0
+  useWorldPosition: 0
+  customGenerationSize: {x: 0, y: 0}
 --- !u!4 &755094196
 Transform:
   m_ObjectHideFlags: 0
@@ -2508,6 +2514,7 @@ MonoBehaviour:
   size: 601
   tileSize: 100
   heightScale: 30
+  useRandomSeed: 0
   seed: 116
   scale: 70
   octaves: 4
@@ -2539,6 +2546,7 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   tilePrefab: {fileID: 5588665986487648577, guid: c1b8698e951f546c5a28788fdf0c1d68, type: 3}
+  generateInEditor: 0
 --- !u!4 &762759842
 Transform:
   m_ObjectHideFlags: 0
@@ -4223,6 +4231,8 @@ MonoBehaviour:
   minGroupCount: 0
   maxGroupCount: 0
   alignWithGround: 1
+  useWorldPosition: 0
+  customGenerationSize: {x: 0, y: 0}
 --- !u!1001 &1392357866
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4875,6 +4885,8 @@ MonoBehaviour:
   minGroupCount: 0
   maxGroupCount: 0
   alignWithGround: 1
+  useWorldPosition: 0
+  customGenerationSize: {x: 0, y: 0}
 --- !u!1 &1616103430
 GameObject:
   m_ObjectHideFlags: 0
@@ -5588,6 +5600,8 @@ MonoBehaviour:
   minGroupCount: 0
   maxGroupCount: 0
   alignWithGround: 1
+  useWorldPosition: 0
+  customGenerationSize: {x: 0, y: 0}
 --- !u!1 &1795745025
 GameObject:
   m_ObjectHideFlags: 0

@@ -39,9 +39,6 @@ public class Inventory : MonoBehaviour, ItemHolder
 
         // Give player test item
         GiveItem(6, 1);
-        //GiveItem(1, 1);
-        //GiveItem(2, 1);
-        GiveItem(7, 10);
         SetActiveItem(0);
     }
 

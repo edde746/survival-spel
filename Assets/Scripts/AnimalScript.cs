@@ -38,9 +38,8 @@ public class AnimalScript : MonoBehaviour
     void Update()
     {
         if (busy || !IsAlive()) return;
-        // Get ground normal
-        RaycastHit hit;
         var forward = transform.forward;
+        RaycastHit hit;
 
         if (state == AnimalState.Idle)
         {

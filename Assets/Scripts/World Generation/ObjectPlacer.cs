@@ -12,6 +12,8 @@ public class ObjectPlacer : MonoBehaviour
     public float groupRange;
     public int minGroupCount, maxGroupCount;
     public bool alignWithGround = true;
+    public bool useWorldPosition = false;
+    public Vector2 customGenerationSize;
 
     (Vector3 position, Vector3 normal) RandomSpot(Vector3 center, float range, bool findFloor = true)
     {
@@ -43,7 +45,9 @@ public class ObjectPlacer : MonoBehaviour
         // Get world dimensions
         var world = GameObject.Find("World");
         var worldGenerator = world.GetComponent<WorldGenerator>();
-        var worldSize = new Vector3(worldGenerator.size, 0f, worldGenerator.size);
+        var worldSize = useWorldPosition ? new Vector3(customGenerationSize.x, 0f, customGenerationSize.y) : new Vector3(worldGenerator.size, 0f, worldGenerator.size);
+        var offset = transform.position;
+        offset.y = 0f;
 
         if (placeInGroups)
         {
@@ -51,12 +55,12 @@ public class ObjectPlacer : MonoBehaviour
             for (int i = 0; i < objectsToPlace; i += groupSize)
             {
                 groupSize = Random.Range(minGroupCount, maxGroupCount);
-                var groupPoint = RandomSpot(worldSize / 2f, worldSize, true);
+                var groupPoint = RandomSpot(worldSize / 2f + offset, worldSize, true).position;
                 GameObject objectToSpawn = null;
                 for (int j = 0; j < groupSize; j++)
                 {
                     objectToSpawn = !objectToSpawn || mixGroups ? GetRandomObject() : objectToSpawn;
-                    var spot = RandomSpot(groupPoint.position, groupRange);
+                    var spot = RandomSpot(groupPoint, groupRange);
                     if (spot.position == Vector3.zero) continue;
                     var newObject = Instantiate(objectToSpawn, spot.position, Quaternion.Euler(0f, Random.Range(0f, 360f), 0f));
                     newObject.transform.parent = transform;
@@ -70,7 +74,7 @@ public class ObjectPlacer : MonoBehaviour
         {
             for (int i = 0; i < objectsToPlace; i++)
             {
-                var spot = RandomSpot(worldSize / 2f, worldSize);
+                var spot = RandomSpot(worldSize / 2f + offset, worldSize);
                 if (spot.position == Vector3.zero) continue;
                 var newObject = Instantiate(GetRandomObject(), spot.position, Quaternion.Euler(0f, Random.Range(0f, 360f), 0f));
                 newObject.transform.parent = transform;

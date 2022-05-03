@@ -7,6 +7,7 @@ public class WorldGenerator : MonoBehaviour
     public int size = 600;
     public int tileSize = 100;
     public float heightScale = 100f;
+    public bool useRandomSeed = false;
     public int seed;
     public float scale = 1f;
 
@@ -18,6 +19,8 @@ public class WorldGenerator : MonoBehaviour
     public AnimationCurve falloffCurve;
     public GameObject tilePrefab;
     float[] map;
+
+    public bool generateInEditor = false;
 
     Texture2D texture;
 
@@ -39,8 +42,14 @@ public class WorldGenerator : MonoBehaviour
         return map;
     }
 
-    void Awake()
+    void GenerateWorld()
     {
+        // Delete all children
+        foreach (Transform child in transform)
+        {
+            DestroyImmediate(child.gameObject);
+        }
+
         // Generate maps
         var falloffMap = GenerateFalloffMap(size);
         map = Noise.GenerateNoiseMap(size, seed, scale, octaves, persistance, lacunarity, offset);
@@ -103,5 +112,16 @@ public class WorldGenerator : MonoBehaviour
                 mesh.RecalculateBounds();
             }
         }
+    }
+
+    void Awake()
+    {
+        if (useRandomSeed) seed = Random.Range(0, int.MaxValue);
+        if (!generateInEditor) GenerateWorld();
+    }
+
+    void OnValidate()
+    {
+        if (generateInEditor) GenerateWorld();
     }
 }
