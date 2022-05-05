@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class MouseLook : MonoBehaviour
@@ -14,6 +12,11 @@ public class MouseLook : MonoBehaviour
         if (lockCursor && Cursor.lockState != CursorLockMode.Locked)
         {
             Cursor.lockState = CursorLockMode.Locked;
+        }
+
+        if (!lockCursor && Cursor.lockState != CursorLockMode.None)
+        {
+            Cursor.lockState = CursorLockMode.None;
         }
 
         if (!disableLook && Cursor.lockState == CursorLockMode.Locked)

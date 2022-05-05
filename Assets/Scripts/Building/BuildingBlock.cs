@@ -19,5 +19,6 @@ public class BuildingBlock : ScriptableObject
     public BlockFlag flags;
     public SnapType snapsTo;
     public int cost = 100;
+    public Item resource;
     // Would be nice to have different upgrade levels, with different costs and items
 }

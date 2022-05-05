@@ -96,7 +96,7 @@ public class AnimalScript : MonoBehaviour
                 animator.SetTrigger("Attack");
                 StartCoroutine(Busy(attackCooldown));
                 // Apply damage to player
-                player.GetComponent<PlayerScript>().ApplyDamage(attackStrength);
+                player.GetComponent<PlayerScript>().ApplyDamage(attackStrength, transform.name.ToLower());
             }
             else
             {

@@ -18,3 +18,4 @@ MonoBehaviour:
   flags: 0
   snapsTo: 1
   cost: 100
+  resource: {fileID: 11400000, guid: 6ea557db5fe9c40c2b94282e9deb326f, type: 2}

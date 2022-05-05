@@ -17,4 +17,5 @@ MonoBehaviour:
   sprite: {fileID: 21300000, guid: 6d39a583304fb446698533009391522b, type: 3}
   flags: 5
   snapsTo: 4
-  cost: 100
+  cost: 120
+  resource: {fileID: 11400000, guid: 6ea557db5fe9c40c2b94282e9deb326f, type: 2}

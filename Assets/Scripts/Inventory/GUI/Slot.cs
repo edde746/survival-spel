@@ -58,7 +58,7 @@ public class Slot : MonoBehaviour, IDropHandler, IDragHandler, IBeginDragHandler
             // Swap contents of item entries
             if (sourceSlot.entry.item?.id == entry.item?.id)
             {
-                if (entry.item.stackable > 0)
+                if (entry?.item?.stackable > 0)
                 {
                     var total = entry.count + sourceSlot.entry.count;
                     if (total > entry.item.stackable)

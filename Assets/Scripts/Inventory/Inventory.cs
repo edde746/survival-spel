@@ -25,10 +25,7 @@ public class Inventory : MonoBehaviour, ItemHolder
 
         Instance = this;
         inventoryUI.SetActive(false);
-    }
 
-    void Start()
-    {
         items = new ItemEntry[4 * 5];
         for (int i = 0; i < items.Length; i++)
         {
@@ -36,10 +33,6 @@ public class Inventory : MonoBehaviour, ItemHolder
         }
 
         itemAnchor = GameObject.FindGameObjectWithTag("ItemAnchor");
-
-        // Give player test item
-        GiveItem(6, 1);
-        SetActiveItem(0);
     }
 
     KeyCode[] NumberKeys = {
@@ -144,6 +137,17 @@ public class Inventory : MonoBehaviour, ItemHolder
             // We have consumed the desired amount
             if (leftToConsume == 0) return;
         }
+    }
+
+    public void ResetInvetory()
+    {
+        for (int i = 0; i < items.Length; i++)
+        {
+            items[i].Consume(items[i].count);
+        }
+
+        GiveItem(6, 1);
+        SetActiveItem(0);
     }
 
     public bool GiveItem(int id, int count = 1)

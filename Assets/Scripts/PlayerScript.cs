@@ -47,7 +47,7 @@ public class PlayerScript : MonoBehaviour
         Spawn();
     }
 
-    void Spawn()
+    public void Spawn()
     {
         // Set spawnpoint
         var point = new Vector3(spawnPoint.x + Random.Range(spawnRadius / -2f, spawnRadius / 2f), 200f, spawnPoint.z + Random.Range(spawnRadius / -2f, spawnRadius / 2f));
@@ -62,6 +62,9 @@ public class PlayerScript : MonoBehaviour
         health = Random.Range(50f, 90f);
         hunger = Random.Range(45f, 80f);
         thirst = Random.Range(40f, 80f);
+
+        // Set beginner inventory
+        Inventory.Instance.ResetInvetory();
     }
 
     void Update()
@@ -276,10 +279,22 @@ public class PlayerScript : MonoBehaviour
             // Place block
             if (!busy && Input.GetButtonDown("Fire1") && Cursor.lockState.Equals(CursorLockMode.Locked))
             {
-                // TODO: Cost
-                var newBlock = Instantiate(selectedBlock.block, previewPosition, Quaternion.identity);
-                newBlock.transform.rotation = previewBlock.transform.rotation;
-                StartCoroutine(BusyFor(0.3f));
+                // Check if we have enough resources
+                if (selectedBlock.cost < Inventory.Instance.TallyItems(selectedBlock.resource))
+                {
+                    // Can not afford
+                    Globals.CreateNotification("Not enough resources");
+                }
+                else
+                {
+                    // Consume items
+                    Inventory.Instance.ConsumeItems(selectedBlock.resource, selectedBlock.cost);
+
+                    // Place block
+                    var newBlock = Instantiate(selectedBlock.block, previewPosition, Quaternion.identity);
+                    newBlock.transform.rotation = previewBlock.transform.rotation;
+                    StartCoroutine(BusyFor(0.3f));
+                }
             }
 
             // Preview building block
@@ -319,6 +334,8 @@ public class PlayerScript : MonoBehaviour
         if (hunger < 5f)
         {
             health -= Time.deltaTime * 0.7f;
+            if (health < 0f)
+                Die("starvation");
             if (healthNotification == null)
                 healthNotification = Globals.CreateNotification("You are starving!", 0f);
         }
@@ -332,6 +349,8 @@ public class PlayerScript : MonoBehaviour
         if (thirst < 7f)
         {
             health -= Time.deltaTime * 0.6f;
+            if (health < 0f)
+                Die("dehydration");
             if (thirstNotification == null)
                 thirstNotification = Globals.CreateNotification("You are dehydrated!", 0f);
         }
@@ -340,10 +359,6 @@ public class PlayerScript : MonoBehaviour
             if (thirstNotification != null)
                 Destroy(thirstNotification);
         }
-
-        // Dead
-        if (health < 0f)
-            Die();
     }
 
     IEnumerator BusyFor(float time)
@@ -396,16 +411,19 @@ public class PlayerScript : MonoBehaviour
     }
 
     // Apply damage function
-    public void ApplyDamage(float damage)
+    public void ApplyDamage(float damage, string reason = "")
     {
         health -= damage;
         if (health <= 0f)
-            Die();
+            Die(reason);
     }
 
-    public void Die()
+    public GameObject deathScreen;
+    DeathScreen deathScreenScript;
+    public void Die(string reason)
     {
-        // TODO: Show some kind of game over/respawn screen
-        // Debug.Log("You died!");
+        if (deathScreenScript == null)
+            deathScreenScript = deathScreen.GetComponent<DeathScreen>();
+        deathScreenScript.Display(reason);
     }
 }

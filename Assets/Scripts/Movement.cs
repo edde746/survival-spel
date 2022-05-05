@@ -4,6 +4,7 @@ public class Movement : MonoBehaviour
 {
     CharacterController controller;
     public float speed = 12f;
+    public static bool disableMovement = false;
     Vector3 velocity;
 
     bool onGround = false;
@@ -28,6 +29,8 @@ public class Movement : MonoBehaviour
         {
             velocity.y = -2f;
         }
+
+        if (disableMovement) return;
 
         float x = Input.GetAxis("Horizontal");
         float z = Input.GetAxis("Vertical");
