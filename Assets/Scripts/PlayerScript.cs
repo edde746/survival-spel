@@ -280,7 +280,7 @@ public class PlayerScript : MonoBehaviour
             if (!busy && Input.GetButtonDown("Fire1") && Cursor.lockState.Equals(CursorLockMode.Locked))
             {
                 // Check if we have enough resources
-                if (selectedBlock.cost < Inventory.Instance.TallyItems(selectedBlock.resource))
+                if (selectedBlock.cost > Inventory.Instance.TallyItems(selectedBlock.resource))
                 {
                     // Can not afford
                     Globals.CreateNotification("Not enough resources");

@@ -2495,7 +2495,7 @@ MonoBehaviour:
     output: {fileID: 11400000, guid: bb9e6e995838c42f293843f6857b1d1d, type: 2}
   - input:
     - item: {fileID: 11400000, guid: 01dc3dce9212340c38751bcea11093a2, type: 2}
-      count: 3
+      count: 125
     output: {fileID: 11400000, guid: 277eb392330c04dda9199e546018aa1d, type: 2}
 --- !u!114 &594705688
 MonoBehaviour:
@@ -8305,7 +8305,7 @@ PrefabInstance:
       objectReference: {fileID: 938524458}
     - target: {fileID: 163890155700980592, guid: a4bafdbbcd584408d9fc4a5153277fcb, type: 3}
       propertyPath: spawnRadius
-      value: 100
+      value: 70
       objectReference: {fileID: 0}
     - target: {fileID: 163890155700980592, guid: a4bafdbbcd584408d9fc4a5153277fcb, type: 3}
       propertyPath: pickableText
@@ -8361,15 +8361,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6696733777694383789, guid: a4bafdbbcd584408d9fc4a5153277fcb, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: 300
       objectReference: {fileID: 0}
     - target: {fileID: 6696733777694383789, guid: a4bafdbbcd584408d9fc4a5153277fcb, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 15
+      value: 74
       objectReference: {fileID: 0}
     - target: {fileID: 6696733777694383789, guid: a4bafdbbcd584408d9fc4a5153277fcb, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: 300
       objectReference: {fileID: 0}
     - target: {fileID: 6696733777694383789, guid: a4bafdbbcd584408d9fc4a5153277fcb, type: 3}
       propertyPath: m_LocalRotation.w
