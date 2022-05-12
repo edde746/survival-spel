@@ -61,7 +61,11 @@ public class ObjectPlacer : MonoBehaviour
                 {
                     objectToSpawn = !objectToSpawn || mixGroups ? GetRandomObject() : objectToSpawn;
                     var spot = RandomSpot(groupPoint, groupRange);
-                    if (spot.position == Vector3.zero) continue;
+                    if (spot.position == Vector3.zero)
+                    {
+                        i--;
+                        continue;
+                    }
                     var newObject = Instantiate(objectToSpawn, spot.position, Quaternion.Euler(0f, Random.Range(0f, 360f), 0f));
                     newObject.transform.parent = transform;
                     if (alignWithGround)
@@ -75,7 +79,11 @@ public class ObjectPlacer : MonoBehaviour
             for (int i = 0; i < objectsToPlace; i++)
             {
                 var spot = RandomSpot(worldSize / 2f + offset, worldSize);
-                if (spot.position == Vector3.zero) continue;
+                if (spot.position == Vector3.zero)
+                {
+                    i--;
+                    continue;
+                }
                 var newObject = Instantiate(GetRandomObject(), spot.position, Quaternion.Euler(0f, Random.Range(0f, 360f), 0f));
                 newObject.transform.parent = transform;
                 if (alignWithGround)

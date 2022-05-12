@@ -47,16 +47,32 @@ public class PlayerScript : MonoBehaviour
         Spawn();
     }
 
+    // HACKY!!
+    Vector3 overwritePosition = Vector3.zero;
+    void LateUpdate()
+    {
+        // Set position
+        if (overwritePosition != Vector3.zero)
+        {
+            transform.position = overwritePosition;
+            overwritePosition = Vector3.zero;
+        }
+    }
+
     public void Spawn()
     {
         // Set spawnpoint
-        var point = new Vector3(spawnPoint.x + Random.Range(spawnRadius / -2f, spawnRadius / 2f), 200f, spawnPoint.z + Random.Range(spawnRadius / -2f, spawnRadius / 2f));
+        while (true)
+        {
+            var point = new Vector3(spawnPoint.x + Random.Range(spawnRadius / -2f, spawnRadius / 2f), 200f, spawnPoint.z + Random.Range(spawnRadius / -2f, spawnRadius / 2f));
 
-        RaycastHit hit;
-        if (Physics.Raycast(point, Vector3.down, out hit, Mathf.Infinity, Physics.AllLayers))
-            point.y = hit.point.y + 3f;
-
-        transform.position = point;
+            RaycastHit hit;
+            if (Physics.Raycast(point, Vector3.down, out hit, 200f, 1 << 6))
+            {
+                overwritePosition = new Vector3(point.x, hit.point.y + 3f, point.z);
+                break;
+            }
+        }
 
         // Generate random vitals to start
         health = Random.Range(50f, 90f);
